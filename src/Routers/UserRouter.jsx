@@ -18,8 +18,8 @@ const UserRouters = [
       <>
         <Header />
 
-        {/* <div style={{ paddingTop: "150px" }}> */}
-        <div>
+        <div style={{ paddingTop: "60px" }}>
+        {/* <div> */}
           <Outlet />
         </div>
 
