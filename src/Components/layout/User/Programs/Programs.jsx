@@ -1,4 +1,306 @@
 // "use client"
+// import { useState } from "react"
+
+// export default function Programs() {
+//   const [activeTab, setActiveTab] = useState("onstage")
+
+//   const progressData = [
+//     { name: "Group A", percentage: 0, color: "bg-blue-600" },
+//     { name: "Group B", percentage: 0, color: "bg-yellow-500" },
+//     { name: "Group C", percentage: 0, color: "bg-red-500" },
+//   ]
+
+//   const programData = {
+//     onstage: [
+//       { category: "Junior", items: 17, results: 0 },
+//       { category: "Senior", items: 19, results: 0 },
+//       { category: "General", items: 12, results: 0 },
+//       { category: "Thamheediyya", items: 0, results: "Not Available" },
+//     ],
+//     offstage: [
+//       { category: "Junior", items: 32, results: 0 },
+//       { category: "Senior", items: 25, results: 0 },
+//       { category: "General", items: 18, results: 0 },
+//       { category: "Thamheediyya", items: 12, results: 0 },
+//     ],
+//   }
+
+//   return (
+//     <section id="programs" className="py-20 bg-gray-50">
+//       <div className="container mx-auto px-4">
+//         <div className="grid lg:grid-cols-2 gap-12">
+//           <div className="space-y-8">
+//             <div>
+//               <h2 className="text-4xl font-bold text-gray-900 mb-6">Point Graph</h2>
+//               <p className="text-gray-600 text-lg mb-8">
+//                 Ummathee Festival: 97 enthusiastic participants and 135 diverse programs transform the campus into an
+//                 artistic hub of creativity and vibrancy.
+//               </p>
+//             </div>
+
+//             <div>
+//               <h3 className="text-2xl font-bold text-gray-900 mb-6">Groups</h3>
+//               <div className="space-y-6">
+//                 {progressData.map((group, index) => (
+//                   <div key={index} className="animate-fade-in-up" style={{ animationDelay: `${index * 200}ms` }}>
+//                     <div className="flex justify-between items-center mb-2">
+//                       <h6 className="font-semibold text-gray-700">{group.name}</h6>
+//                       <span className="font-semibold text-gray-700">{group.percentage}%</span>
+//                     </div>
+//                     <div className="w-full bg-gray-200 rounded-full h-3">
+//                       <div
+//                         className={`h-3 rounded-full ${group.color} transition-all duration-1000 ease-out`}
+//                         style={{ width: `${group.percentage}%` }}
+//                       ></div>
+//                     </div>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           </div>
+
+//           <div className="space-y-8">
+//             <div className="border-2 border-blue-600 rounded-lg overflow-hidden">
+//               <div className="flex">
+//                 <button
+//                   onClick={() => setActiveTab("onstage")}
+//                   className={`flex-1 py-4 px-6 text-lg font-semibold transition-all duration-300 ${
+//                     activeTab === "onstage" ? "bg-blue-600 text-white" : "bg-white text-blue-600 hover:bg-blue-50"
+//                   }`}
+//                 >
+//                   On Stage
+//                 </button>
+//                 <button
+//                   onClick={() => setActiveTab("offstage")}
+//                   className={`flex-1 py-4 px-6 text-lg font-semibold transition-all duration-300 ${
+//                     activeTab === "offstage" ? "bg-blue-600 text-white" : "bg-white text-blue-600 hover:bg-blue-50"
+//                   }`}
+//                 >
+//                   Off Stage
+//                 </button>
+//               </div>
+//             </div>
+
+//             <div className="grid grid-cols-2 gap-6">
+//               {programData[activeTab].map((program, index) => (
+//                 <div
+//                   key={index}
+//                   className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 animate-fade-in-up"
+//                   style={{ animationDelay: `${index * 100}ms` }}
+//                 >
+//                   <h5 className="text-xl font-bold text-gray-900 mb-3">{program.category}</h5>
+//                   <hr className="border-blue-600 border-2 mb-3" />
+//                   <p className="text-blue-600 font-semibold mb-2">
+//                     {program.items} {program.items === 1 ? "Item" : "Items"}
+//                   </p>
+//                   <p className="text-gray-600">
+//                     {typeof program.results === "number" ? `${program.results} Result published` : program.results}
+//                   </p>
+//                 </div>
+//               ))}
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </section>
+//   )
+// }
+
+
+"use client";
+
+import { useState } from "react";
+import PropTypes from "prop-types";
+import {
+  Music,
+  Drama,
+  Fence as Dance,
+  Trophy,
+  Award,
+  Star,
+  ChevronDown,
+  Filter,
+} from "lucide-react";
+
+export default function Programs() {
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [displayCount, setDisplayCount] = useState(12);
+
+  const allPrograms = [
+    {
+      icon: Music,
+      title: "Classical Vocal Solo",
+      time: "10:00 AM - 11:00 AM",
+      description: "Individual classical music performances showcasing vocal excellence",
+      category: "Music",
+      type: "onstage",
+      gradient: "from-primary to-chart-2",
+      winner: "first",
+      winnerGroup: "St. Mary's College",
+    },
+    {
+      icon: Dance,
+      title: "Classical Dance Solo",
+      time: "3:00 PM - 4:00 PM",
+      description: "Traditional Indian classical dance forms",
+      category: "Dance",
+      type: "onstage",
+      gradient: "from-secondary to-chart-3",
+      winner: "first",
+      winnerGroup: "Maharaja's College",
+    },
+    {
+      icon: Drama,
+      title: "Mono Acting",
+      time: "9:00 AM - 10:00 AM",
+      description: "Solo theatrical performances showcasing acting skills",
+      category: "Theatre",
+      type: "onstage",
+      gradient: "from-chart-3 to-chart-4",
+      winner: "first",
+      winnerGroup: "Fatima Mata College",
+    },
+    // Add more programs as needed
+  ];
+
+  const filteredPrograms = allPrograms.filter((program) => {
+    if (selectedCategory === "all") return true;
+    if (selectedCategory === "onstage") return program.type === "onstage";
+    if (selectedCategory === "offstage") return program.type === "offstage";
+    return program.category === selectedCategory;
+  });
+
+  const displayedPrograms = filteredPrograms.slice(0, displayCount);
+
+  // Winner Badge Component
+  const WinnerBadge = ({ winner }) => {
+    if (!winner) return null;
+
+    const badgeConfig = {
+      first: { icon: Trophy, color: "text-yellow-600 bg-yellow-100", label: "1st Place" },
+      second: { icon: Award, color: "text-gray-600 bg-gray-100", label: "2nd Place" },
+      third: { icon: Star, color: "text-orange-600 bg-orange-100", label: "3rd Place" },
+    };
+
+    const config = badgeConfig[winner];
+    const Icon = config.icon;
+
+    return (
+      <div className={`${config.color} px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 mb-2`}>
+        <Icon className="w-4 h-4" />
+        {config.label}
+      </div>
+    );
+  };
+
+  WinnerBadge.propTypes = {
+  winner: PropTypes.string.isRequired,
+};
+
+  return (
+    <div className="min-h-screen bg-background">
+      <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background">
+        <div className="max-w-6xl mx-auto px-4 text-center mb-16">
+          <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right">Festival Programs</h1>
+          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right delay-150">
+            Discover diverse artistic programs and competitions that make UMMATHEE a celebration of creativity
+          </p>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {[
+            { key: "all", label: "All Programs" },
+            { key: "onstage", label: "Onstage" },
+            { key: "offstage", label: "Offstage" },
+            { key: "Music", label: "Music" },
+            { key: "Dance", label: "Dance" },
+            { key: "Theatre", label: "Theatre" },
+          ].map((category) => (
+            <button
+              key={category.key}
+              onClick={() => setSelectedCategory(category.key)}
+              className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+                selectedCategory === category.key
+                  ? "bg-primary text-primary-foreground shadow-lg scale-105"
+                  : "bg-card text-card-foreground hover:bg-primary/10 hover:scale-105"
+              }`}
+            >
+              <Filter className="w-4 h-4" />
+              {category.label}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <section className="py-20">
+        <div className="max-w-6xl mx-auto px-4">
+          <p className="text-lg text-muted-foreground text-center mb-8">
+            Showing {displayedPrograms.length} of {filteredPrograms.length} programs
+          </p>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayedPrograms.map((program, index) => {
+              const Icon = program.icon;
+              return (
+                <div key={index} className="group animate-rotate-in" style={{ animationDelay: `${index * 50}ms` }}>
+                  <div className="bg-card rounded-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-border relative overflow-hidden">
+                    <div className="absolute top-4 right-4">
+                      <WinnerBadge winner={program.winner} />
+                    </div>
+
+                    <div
+                      className={`bg-gradient-to-r ${program.gradient} w-16 h-16 rounded-lg flex items-center justify-center mb-6 animate-pulse-glow`}
+                    >
+                      <Icon className="w-8 h-8 text-white" />
+                    </div>
+
+                    <div className="mb-4 flex flex-wrap gap-2">
+                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+                        {program.category}
+                      </span>
+                      <span
+                        className={`px-3 py-1 rounded-full text-sm font-medium ${
+                          program.type === "onstage" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+                        }`}
+                      >
+                        {program.type === "onstage" ? "On Stage" : "Off Stage"}
+                      </span>
+                    </div>
+
+                    <h3 className="text-xl font-bold mb-2 text-card-foreground">{program.title}</h3>
+                    <p className="text-primary font-semibold mb-3">{program.time}</p>
+                    <p className="text-muted-foreground leading-relaxed mb-4">{program.description}</p>
+
+                    <div className="mt-6 pt-4 border-t border-border">
+                      <button className="text-primary hover:text-primary/80 font-semibold group-hover:translate-x-1 transition-transform duration-300">
+                        Learn More →
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          {displayCount < filteredPrograms.length && (
+            <div className="text-center mt-12">
+              <button
+                onClick={() => setDisplayCount((prev) => Math.min(prev + 12, filteredPrograms.length))}
+                className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 flex items-center gap-2 mx-auto"
+              >
+                Load More Programs
+                <ChevronDown className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+
+// "use client"
 
 
 // import {

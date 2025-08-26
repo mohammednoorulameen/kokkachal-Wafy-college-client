@@ -8,6 +8,7 @@ import ContactPage from "../Pages/User/ContactPage";
 import GalleryPage from "../Pages/User/GalleryPage";
 import Error from "../Components/Common/Error";
 import ResultsPage from "../Pages/User/ResultsPage";
+import ProgramsPage from "../Pages/User/ProgramsPage";
 
 const UserRouters = [
   {
@@ -37,6 +38,10 @@ const UserRouters = [
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/programs",
+        element: <ProgramsPage />,
       },
        {
         path: "/gallery",
