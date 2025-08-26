@@ -8,7 +8,7 @@ export default function AboutPage() {
       <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right">About UMMATHEE</h1>
+            <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right"> UMERALI SHIHAB THANGAL ISLAMIC ACADEMY KOKKACHAL</h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right delay-150">
               A celebration of artistic excellence, cultural diversity, and creative expression that brings our college
               community together
@@ -100,9 +100,9 @@ export default function AboutPage() {
             </div>
 
             <div className="animate-slide-in-right delay-300">
-              <div className="bg-gradient-to-br from-primary to-secondary p-8 rounded-2xl text-white">
+              <div className="bg-gradient-to-br from-primary to-secondary p-8 rounded-2xl text-black">
                 <h4 className="text-2xl font-bold mb-4">This Years Theme</h4>
-                <p className="text-white/90 mb-6">
+                <p className="text-black/90 mb-6">
                    - Celebrating the beautiful tapestry of cultures, traditions, and artistic
                   expressions that make our college community unique and vibrant.
                 </p>

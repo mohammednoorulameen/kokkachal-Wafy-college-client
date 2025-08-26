@@ -9,6 +9,7 @@ import GalleryPage from "@/Pages/User/Gallery/GalleryPage";
 import ResultsPage from "@/Pages/User/Results/ResultsPage";
 import Error from "@/Components/Common/Error";
 import HomePage from "@/Pages/User/Home/HomePage";
+import ZoneResultsPage from "@/Pages/User/ZoneResult/ZoneResultPage";
 
 
 const UserRouters = [
@@ -51,6 +52,10 @@ const UserRouters = [
        {
         path: "/results",
         element: <ResultsPage />,
+      },
+       {
+        path: "/zoneresult",
+        element: <ZoneResultsPage />,
       },
       {
         path: "*",

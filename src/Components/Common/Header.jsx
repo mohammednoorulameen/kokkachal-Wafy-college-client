@@ -21,6 +21,7 @@ export default function Navbar() {
     { name: "Programs", href: "/programs", icon: Calendar },
     { name: "Gallery", href: "/gallery", icon: ImageIcon },
     { name: "Results", href: "/results", icon: Trophy },
+    { name: "Zone Results", href: "/zoneresult", icon: Trophy },
     { name: "Contact", href: "/contact", icon: Phone },
   ]
 
@@ -80,8 +81,8 @@ export default function Navbar() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="group flex items-center px-3 py-2 rounded-md text-base font-medium text-foreground hover:text-primary hover:bg-muted transition-all duration-300 animate-slide-in-right"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="group flex items-center px-3 py-2 rounded-md text-base font-medium text-black hover:text-primary hover:bg-muted transition-all duration-300 animate-slide-in-right"
+                  style={{ animationDelay: `${index * 0}ms` }}
                   onClick={() => setIsOpen(false)}
                 >
                   <Icon className="w-5 h-5 mr-3 group-hover:scale-110 transition-transform duration-300" />
