@@ -1,5 +1,5 @@
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import {
@@ -14,6 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useRef } from "react";
+import { Button } from "@/Components/ui/button";
 
 export default function Home() {
   // Mock data for latest winning teams and students
@@ -78,6 +79,10 @@ export default function Home() {
       position: "3rd Place",
     },
   ];
+
+
+    const navigate = useNavigate();
+
 
   // Refs for scrolling containers
   const teamScrollRef = useRef(null);
@@ -267,6 +272,16 @@ export default function Home() {
           </Carousel>
         </div>
       </section> */}
+
+      <section>
+        <div className="flex justify-center gap-x-2">
+          <Button className="bg-transparent border border-black   text-black hover:bg-white-600" >Download Hand book</Button>
+          <span>
+          <Button  onClick={() => navigate("/gallery")} className="bg-transparent border border-black  text-black hover:bg-white-600" >Explore Gallery</Button>
+          </span>
+        </div>
+
+      </section>
 
       <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="max-w-6xl mx-auto px-4">

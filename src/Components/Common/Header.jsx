@@ -35,7 +35,8 @@ export default function Navbar() {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex-shrink-0">
-            <h1 className="text-2xl font-bold festival-text-gradient">UMMATHEE</h1>
+            <h3 className="text-1xl font-bold festival-text-gradient"> KOKKACHAL WAFY COLLEGE
+</h3>
           </div>
 
           {/* Desktop Navigation */}
