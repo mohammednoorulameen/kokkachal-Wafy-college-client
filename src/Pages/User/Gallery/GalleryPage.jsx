@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-export default function Gallery() {
+export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState("all")
 
   const categories = ["all", "music", "dance", "theatre", "visual-arts", "photography"]

@@ -1,14 +1,15 @@
 
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
-import HomePage from "../Pages/User/HomePage";
 import { Outlet } from "react-router-dom";
-import AboutPage from "../Pages/User/AboutPage";
-import ContactPage from "../Pages/User/ContactPage";
-import GalleryPage from "../Pages/User/GalleryPage";
-import Error from "../Components/Common/Error";
-import ResultsPage from "../Pages/User/ResultsPage";
-import ProgramsPage from "../Pages/User/ProgramsPage";
+import AboutPage from "@/Pages/User/About/AboutPage";
+import ContactPage from "@/Pages/User/Contact/ContactPage";
+import ProgramsPage from "@/Pages/User/Programs/ProgramsPage";
+import GalleryPage from "@/Pages/User/Gallery/GalleryPage";
+import ResultsPage from "@/Pages/User/Results/ResultsPage";
+import Error from "@/Components/Common/Error";
+import HomePage from "@/Pages/User/Home/HomePage";
+
 
 const UserRouters = [
   {

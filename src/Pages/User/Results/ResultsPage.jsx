@@ -1,7 +1,7 @@
 
 import { Trophy, Medal, Award, Star } from "lucide-react"
 
-export default function Results() {
+export default function ResultsPage() {
   const categories = [
     {
       title: "Music Competitions",

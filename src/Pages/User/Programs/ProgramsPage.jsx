@@ -122,7 +122,7 @@ import {
   Filter,
 } from "lucide-react";
 
-export default function Programs() {
+export default function ProgramsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [displayCount, setDisplayCount] = useState(12);
 

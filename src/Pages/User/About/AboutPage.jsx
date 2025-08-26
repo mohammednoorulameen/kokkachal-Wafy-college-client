@@ -1,7 +1,7 @@
 
 import { Heart, Target, Eye, Users, Calendar, Award } from "lucide-react"
 
-export default function About() {
+export default function AboutPage() {
   return (
     <div className="min-h-screen bg-background">
 

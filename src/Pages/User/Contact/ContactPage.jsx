@@ -4,7 +4,7 @@
 import { Mail, Phone, MapPin, Clock, Send, MessageCircle } from "lucide-react"
 import { useState } from "react"
 
-export default function Contact() {
+export default function ContactPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
