@@ -1,4 +1,3 @@
-
 import Header from "../Components/Common/Header";
 import Footer from "../Components/Common/Footer";
 import { Outlet } from "react-router-dom";
@@ -10,7 +9,7 @@ import ResultsPage from "@/Pages/User/Results/ResultsPage";
 import Error from "@/Components/Common/Error";
 import HomePage from "@/Pages/User/Home/HomePage";
 import ZoneResultsPage from "@/Pages/User/ZoneResult/ZoneResultPage";
-
+import ScrollToTop from "@/Components/Common/ScrollTop";
 
 const UserRouters = [
   {
@@ -20,7 +19,8 @@ const UserRouters = [
         <Header />
 
         <div style={{ paddingTop: "60px" }}>
-        {/* <div> */}
+          {/* <div> */}
+          <ScrollToTop />
           <Outlet />
         </div>
 
@@ -33,7 +33,7 @@ const UserRouters = [
         path: "",
         element: <HomePage />,
       },
-       {
+      {
         path: "/about",
         element: <AboutPage />,
       },
@@ -45,22 +45,22 @@ const UserRouters = [
         path: "/programs",
         element: <ProgramsPage />,
       },
-       {
+      {
         path: "/gallery",
         element: <GalleryPage />,
       },
-       {
+      {
         path: "/results",
         element: <ResultsPage />,
       },
-       {
+      {
         path: "/zoneresult",
         element: <ZoneResultsPage />,
       },
       {
         path: "*",
-        element : <Error/>
-      }
+        element: <Error />,
+      },
     ],
   },
 ];
