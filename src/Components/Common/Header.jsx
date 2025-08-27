@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import { Menu, X, Home, Info, Calendar, ImageIcon, Trophy, Phone } from "lucide-react"
 
-export default function Navbar() {
+export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
