@@ -273,6 +273,9 @@ export default function Home() {
         </div>
       </section> */}
 
+
+      
+
       <section>
         <div className="flex justify-center gap-x-2">
           <Button className="bg-transparent border border-black   text-black hover:bg-white-600" >Download Hand book</Button>
@@ -283,31 +286,76 @@ export default function Home() {
 
       </section>
 
-      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { icon: Users, number: "200+", label: "Participants" },
-              { icon: Calendar, number: "130+", label: "Events" },
-              { icon: Trophy, number: "50+", label: "Winners" },
-              { icon: Camera, number: "1000+", label: "Memories" },
-            ].map((stat, index) => {
-              const Icon = stat.icon;
-              return (
+ {/* Latest Student Winners Section with Horizontal Scrolling */}
+      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
+              <Trophy className="w-12 h-12 text-yellow-500" />
+              Latest Winning Students
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Celebrating individual excellence and outstanding achievements
+            </p>
+          </div>
+
+          <div className="relative">
+            <button
+              onClick={() => scrollLeft(winnerScrollRef)}
+              // className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
+               className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
+            >
+              <ChevronLeft className="w-8 h-8 text-blue-600" />
+            </button>
+            <div
+              ref={winnerScrollRef}
+              className="flex overflow-x-auto scroll-smooth gap-8 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
+            >
+              {latestWinners.map((winner, index) => (
                 <div
                   key={index}
-                  className="text-center animate-rotate-in"
-                  style={{ animationDelay: `${index * 150}ms` }}
+                  className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:scale-105 border border-blue-200 min-w-[300px]"
                 >
-                  <Icon className="w-12 h-12 mx-auto mb-4 text-yellow-500 animate-festival-bounce" />
-                  <div className="text-3xl font-bold text-gray-800 mb-2">{stat.number}</div>
-                  <div className="text-gray-600">{stat.label}</div>
+                  <div className="p-8 text-center">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mb-6">
+                      <Award className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{winner.name}</h3>
+                    <p className="text-gray-600 mb-2"><strong>Event:</strong> {winner.event}</p>
+                    <p className="text-gray-600 mb-2"><strong>Category:</strong> {winner.category}</p>
+                    <p className="text-gray-600 mb-4"><strong>Date:</strong> {winner.date}</p>
+                    <span
+                      className={`px-4 py-2 rounded-full text-sm font-bold ${
+                        winner.position === "1st Place"
+                          ? "bg-yellow-100 text-yellow-800"
+                          : winner.position === "2nd Place"
+                          ? "bg-gray-100 text-gray-800"
+                          : "bg-orange-100 text-gray-800"
+                      }`}
+                    >
+                      {winner.position}
+                    </span>
+                    <Link
+                      to="/results"
+                      className="mt-6 inline-block text-blue-600 hover:text-blue-800 font-semibold transition-colors"
+                    >
+                      View Full Results →
+                    </Link>
+                  </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+            <button
+              onClick={() => scrollRight(winnerScrollRef)}
+              // className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
+               className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
+            >
+              <ChevronRight className="w-8 h-8 text-blue-600" />
+            </button>
           </div>
         </div>
       </section>
+
 
       {/* Discover UMMATHEE Section with Horizontal Scrolling */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
@@ -389,6 +437,35 @@ export default function Home() {
         </div>
       </section>
 
+
+      <section className="py-16 bg-gradient-to-br from-blue-50 to-indigo-100">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { icon: Users, number: "200+", label: "Participants" },
+              { icon: Calendar, number: "130+", label: "Events" },
+              { icon: Trophy, number: "50+", label: "Winners" },
+              { icon: Camera, number: "1000+", label: "Memories" },
+            ].map((stat, index) => {
+              const Icon = stat.icon;
+              return (
+                <div
+                  key={index}
+                  className="text-center animate-rotate-in"
+                  style={{ animationDelay: `${index * 150}ms` }}
+                >
+                  <Icon className="w-12 h-12 mx-auto mb-4 text-yellow-500 animate-festival-bounce" />
+                  <div className="text-3xl font-bold text-gray-800 mb-2">{stat.number}</div>
+                  <div className="text-gray-600">{stat.label}</div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      
+
       {/* Latest Winning Teams Section with Horizontal Scrolling */}
       <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -461,77 +538,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Latest Student Winners Section with Horizontal Scrolling */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
-              <Trophy className="w-12 h-12 text-yellow-500" />
-              Latest Winning Students
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Celebrating individual excellence and outstanding achievements
-            </p>
-          </div>
-
-          <div className="relative">
-            <button
-              onClick={() => scrollLeft(winnerScrollRef)}
-              // className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
-               className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
-            >
-              <ChevronLeft className="w-8 h-8 text-blue-600" />
-            </button>
-            <div
-              ref={winnerScrollRef}
-              className="flex overflow-x-auto scroll-smooth gap-8 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-            >
-              {latestWinners.map((winner, index) => (
-                <div
-                  key={index}
-                  className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:scale-105 border border-blue-200 min-w-[300px]"
-                >
-                  <div className="p-8 text-center">
-                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-indigo-500 text-white mb-6">
-                      <Award className="w-8 h-8" />
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{winner.name}</h3>
-                    <p className="text-gray-600 mb-2"><strong>Event:</strong> {winner.event}</p>
-                    <p className="text-gray-600 mb-2"><strong>Category:</strong> {winner.category}</p>
-                    <p className="text-gray-600 mb-4"><strong>Date:</strong> {winner.date}</p>
-                    <span
-                      className={`px-4 py-2 rounded-full text-sm font-bold ${
-                        winner.position === "1st Place"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : winner.position === "2nd Place"
-                          ? "bg-gray-100 text-gray-800"
-                          : "bg-orange-100 text-gray-800"
-                      }`}
-                    >
-                      {winner.position}
-                    </span>
-                    <Link
-                      to="/results"
-                      className="mt-6 inline-block text-blue-600 hover:text-blue-800 font-semibold transition-colors"
-                    >
-                      View Full Results →
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => scrollRight(winnerScrollRef)}
-              // className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
-               className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
-            >
-              <ChevronRight className="w-8 h-8 text-blue-600" />
-            </button>
-          </div>
-        </div>
-      </section>
-
-      
     </div>
   );
 }

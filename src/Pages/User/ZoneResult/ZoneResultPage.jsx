@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
+
+
 const resultsData = [
   {
-    category: "B1-Qira'ath",
+    category: "Thamheediyya(thm) ",
     items: [
       { rank: 1, name: "MUHAMMED ZIYAD", location: "Bafakhy Wafy, Valavannur", grade: "A+" },
       { rank: 2, name: "AHAMMED ZIDHAN P M", location: "Majlis, Puramannur", grade: "A" },
@@ -12,15 +14,26 @@ const resultsData = [
     ],
   },
   {
-    category: "B2-Speech Malayalam",
+    category: "Junior (jnr) ",
     items: [
+      { rank: null, name: "MUBEEN WAFY", location: "Kokkachal Wafy College", grade: "B" },
+      { rank: null, name: "NOORUL MUBEEN", location: "Kokkachal Wafy College", grade: "B" },
       { rank: null, name: "ABDULLA MOHAMMED HADI", location: "Kokkachal Wafy College", grade: "B" },
     ],
   },
   {
-    category: "B3-English Speech",
+    category: "Senior (snr) ",
     items: [
       { rank: 1, name: "ALIYA FATHIMA", location: "Valavannur College", grade: "A+" },
+      { rank: 2, name: "AHAMED RASHID", location: "Puramannur College", grade: "A" },
+      { rank: 2, name: "AHAMED RASHID", location: "Puramannur College", grade: "A" },
+    ],
+  },
+    {
+    category: "General( gnr)",
+    items: [
+      { rank: 1, name: "FATHIMA", location: "Valavannur College", grade: "A+" },
+      { rank: 2, name: "MUBEEN", location: "Puramannur College", grade: "A" },
       { rank: 2, name: "AHAMED RASHID", location: "Puramannur College", grade: "A" },
     ],
   },
