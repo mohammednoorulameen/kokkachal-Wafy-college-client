@@ -10,7 +10,7 @@ import { Loader2, Shield } from "lucide-react"
 import PropTypes from "prop-types"
 import adminInstance from "@/axios/AdminInstance"
 
-export function AdminLogin({ onLogin }) {
+const Adminlogin = ({ onLogin }) => {
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [loading, setLoading] = useState(false)
@@ -94,7 +94,11 @@ console.log(email,password);
   )
 }
 
+export default Adminlogin
 // Add prop types
-AdminLogin.propTypes = {
+Adminlogin.propTypes = {
   onLogin: PropTypes.func.isRequired,
 }
+
+
+

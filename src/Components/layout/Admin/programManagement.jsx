@@ -24,7 +24,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import PropTypes from "prop-types"
 
-export function ProgramManagement({ token }) {
+
+const Programmanagement = ({ token }) => {
   const [programs, setPrograms] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
@@ -245,6 +246,9 @@ const fetchPrograms = async () => {
 }
 
  // Add prop types validation
- ProgramManagement.propTypes = {
+ Programmanagement.propTypes = {
    token: PropTypes.string.isRequired,
  }
+
+
+ export default Programmanagement

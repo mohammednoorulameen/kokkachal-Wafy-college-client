@@ -36,7 +36,7 @@ import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
 import PropTypes from "prop-types";
 
-export function UserManagement({ token }) {
+const UserManagement = ({ token }) => {
   const [users, setUsers] = useState([]);
   const [visibleCount, setVisibleCount] = useState(10);
   const [loading, setLoading] = useState(true);
@@ -482,6 +482,8 @@ UserManagement.propTypes = {
   token: PropTypes.string.isRequired,
 };
 
+
+export default UserManagement;
 
 // "use client";
 

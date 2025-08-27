@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card"
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
@@ -23,7 +23,8 @@ import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import PropTypes from "prop-types"
 
-export function CategoryManagement({ token }) {
+
+  const Categorymanagement = ({ token }) => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
@@ -196,6 +197,10 @@ export function CategoryManagement({ token }) {
 
 
 // Add prop types validation
-CategoryManagement.propTypes = {
+Categorymanagement.propTypes = {
   token: PropTypes.string.isRequired,
 }
+
+
+
+export default Categorymanagement
