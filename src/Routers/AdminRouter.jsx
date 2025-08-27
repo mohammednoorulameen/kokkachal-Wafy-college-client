@@ -1,4 +1,4 @@
-import Error from "@/components/common/Error";
+import Error from "@/Components/Common/Error";
 import AdminDashboard from "@/Pages/admin/adminHomePage/AdminHomePage";
 
 

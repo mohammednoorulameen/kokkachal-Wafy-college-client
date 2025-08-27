@@ -14,7 +14,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/Components/ui/button";
 
 export default function Home() {
   // Mock data for latest winning teams and students

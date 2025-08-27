@@ -1,8 +1,8 @@
 
 
 import './App.css'
-import AdminRouters from './Routers/adminRouter';
-import UserRouter from './Routers/userRouter'
+import AdminRouters from './Routers/AdminRouter';
+import UserRouter from './Routers/UserRouter'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'; // import Toaster
 

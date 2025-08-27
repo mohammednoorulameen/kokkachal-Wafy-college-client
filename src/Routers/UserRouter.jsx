@@ -1,15 +1,15 @@
-import Header from "../components/common/Header";
-import Footer from "../components/common/Footer";
+import Header from "../Components/Common/header";
+import Footer from "../Components/Common/Footer";
 import { Outlet } from "react-router-dom";
 import AboutPage from "@/Pages/User/About/AboutPage";
 import ContactPage from "@/Pages/User/Contact/ContactPage";
 import ProgramsPage from "@/Pages/User/Programs/ProgramsPage";
 import GalleryPage from "@/Pages/User/Gallery/GalleryPage";
 import ResultsPage from "@/Pages/User/Results/ResultsPage";
-import Error from "@/components/common/Error";
+import Error from "@/Components/Common/Error";
 import HomePage from "@/Pages/User/Home/HomePage";
 import ZoneResultsPage from "@/Pages/User/ZoneResult/ZoneResultPage";
-import ScrollToTop from "@/components/common/ScrollTop";
+import ScrollToTop from "@/Components/Common/ScrollTop";
 
 const UserRouters = [
   {
