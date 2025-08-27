@@ -1,111 +1,120 @@
-"use client"
+// "use client"
 
-import { useState, useEffect } from "react"
-import { AdminLogin } from "@/Components/layout/Admin/AdminLogin"
+// import { useState, useEffect } from "react"
+// import { AdminLogin } from "@/Components/layout/Admin/AdminLogin"
+// // import { UserManagement } from "@/Components/layout/Admin/userManagement"
+// // import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
+// // import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
+// import { LogOut, Users, FolderOpen, Award } from "lucide-react"
 // import { UserManagement } from "@/Components/layout/Admin/userManagement"
-// import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
-// import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
-import { LogOut, Users, FolderOpen, Award } from "lucide-react"
-import { UserManagement } from "@/Components/layout/Admin/userManagement"
-import { CategoryManagement } from "@/Components/layout/Admin/CategoryManagement"
-import { ProgramManagement } from "@/Components/layout/Admin/ProgramManagement"
+// import { CategoryManagement } from "@/Components/layout/Admin/CategoryManagement"
+// import { ProgramManagement } from "@/Components/layout/Admin/ProgramManagement"
 
-export default function AdminDashboard() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [token, setToken] = useState(null)
-  const [activeTab, setActiveTab] = useState("users")
+// export default function AdminDashboard() {
+//   const [isAuthenticated, setIsAuthenticated] = useState(false)
+//   const [token, setToken] = useState(null)
+//   const [activeTab, setActiveTab] = useState("users")
 
-  useEffect(() => {
-    const savedToken = localStorage.getItem("adminToken")
-    if (savedToken) {
-      setToken(savedToken)
-      setIsAuthenticated(true)
-    }
-  }, [])
+//   useEffect(() => {
+//     const savedToken = localStorage.getItem("adminToken")
+//     if (savedToken) {
+//       setToken(savedToken)
+//       setIsAuthenticated(true)
+//     }
+//   }, [])
 
-  const handleLogin = (token) => {
-    localStorage.setItem("adminToken", token)
-    setToken(token)
-    setIsAuthenticated(true)
-  }
+//   const handleLogin = (token) => {
+//     localStorage.setItem("adminToken", token)
+//     setToken(token)
+//     setIsAuthenticated(true)
+//   }
 
-  const handleLogout = () => {
-    localStorage.removeItem("adminToken")
-    setToken(null)
-    setIsAuthenticated(false)
-  }
+//   const handleLogout = () => {
+//     localStorage.removeItem("adminToken")
+//     setToken(null)
+//     setIsAuthenticated(false)
+//   }
 
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <AdminLogin onLogin={handleLogin} />
-      </div>
-    )
-  }
+//   if (!isAuthenticated) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+//         <AdminLogin onLogin={handleLogin} />
+//       </div>
+//     )
+//   }
 
+//   return (
+//     <div className="min-h-screen bg-gray-50">
+//       {/* Header */}
+//       <header className="bg-white shadow-sm border-b">
+//         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+//           <div className="flex justify-between items-center py-4">
+//             <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+//             <button
+//               onClick={handleLogout}
+//               className="flex items-center gap-2 border border-gray-300 rounded px-3 py-1 hover:bg-gray-100"
+//             >
+//               <LogOut className="h-4 w-4" />
+//               Logout
+//             </button>
+//           </div>
+//         </div>
+//       </header>
+
+//       {/* Tabs */}
+//       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+//         <div className="flex border-b border-gray-200 mb-4">
+//           <button
+//             className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
+//               activeTab === "users"
+//                 ? "border-blue-500 text-blue-500 font-medium"
+//                 : "border-transparent text-gray-500 hover:text-gray-700"
+//             }`}
+//             onClick={() => setActiveTab("users")}
+//           >
+//             <Users className="h-4 w-4" /> Users
+//           </button>
+//           <button
+//             className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
+//               activeTab === "categories"
+//                 ? "border-blue-500 text-blue-500 font-medium"
+//                 : "border-transparent text-gray-500 hover:text-gray-700"
+//             }`}
+//             onClick={() => setActiveTab("categories")}
+//           >
+//             <FolderOpen className="h-4 w-4" /> Categories
+//           </button>
+//           <button
+//             className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
+//               activeTab === "programs"
+//                 ? "border-blue-500 text-blue-500 font-medium"
+//                 : "border-transparent text-gray-500 hover:text-gray-700"
+//             }`}
+//             onClick={() => setActiveTab("programs")}
+//           >
+//             <Award className="h-4 w-4" /> Programs
+//           </button>
+//         </div>
+
+//         {/* Tab Content */}
+//         <div>
+//           {activeTab === "users" && <UserManagement token={token} />}
+//           {activeTab === "categories" && <CategoryManagement token={token} />}
+//           {activeTab === "programs" && <ProgramManagement token={token} />}
+//         </div>
+//       </main>
+//     </div>
+//   )
+// }
+
+
+
+export const AdminHomePage = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 border border-gray-300 rounded px-3 py-1 hover:bg-gray-100"
-            >
-              <LogOut className="h-4 w-4" />
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      {/* Tabs */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex border-b border-gray-200 mb-4">
-          <button
-            className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
-              activeTab === "users"
-                ? "border-blue-500 text-blue-500 font-medium"
-                : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActiveTab("users")}
-          >
-            <Users className="h-4 w-4" /> Users
-          </button>
-          <button
-            className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
-              activeTab === "categories"
-                ? "border-blue-500 text-blue-500 font-medium"
-                : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActiveTab("categories")}
-          >
-            <FolderOpen className="h-4 w-4" /> Categories
-          </button>
-          <button
-            className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
-              activeTab === "programs"
-                ? "border-blue-500 text-blue-500 font-medium"
-                : "border-transparent text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => setActiveTab("programs")}
-          >
-            <Award className="h-4 w-4" /> Programs
-          </button>
-        </div>
-
-        {/* Tab Content */}
-        <div>
-          {activeTab === "users" && <UserManagement token={token} />}
-          {activeTab === "categories" && <CategoryManagement token={token} />}
-          {activeTab === "programs" && <ProgramManagement token={token} />}
-        </div>
-      </main>
-    </div>
+    <div>AdminHomePage</div>
   )
 }
+
 
 
 // "use client"
