@@ -109,13 +109,13 @@
 
 
 
-export const AdminHomePage = () => {
+const AdminHomePage = () => {
   return (
     <div>AdminHomePage</div>
   )
 }
 
-
+export default AdminHomePage
 
 // "use client"
 
