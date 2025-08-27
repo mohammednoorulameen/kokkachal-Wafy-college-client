@@ -1,5 +1,5 @@
 
-import { Button } from "@/Components/ui/button";
+import { Button } from "@/components/ui/button";
 import { Trophy, Medal, Award, Star } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 

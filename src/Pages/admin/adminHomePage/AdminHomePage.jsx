@@ -1,11 +1,14 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AdminLogin } from "@/Components/layout/Admin/AdminLogin"
-import { UserManagement } from "@/Components/layout/Admin/userManagement"
-import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
-import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
+import { AdminLogin } from "@/components/layout/Admin/AdminLogin"
+// import { UserManagement } from "@/Components/layout/Admin/userManagement"
+// import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
+// import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
 import { LogOut, Users, FolderOpen, Award } from "lucide-react"
+import { UserManagement } from "@/components/layout/Admin/userManagement"
+import { CategoryManagement } from "@/components/layout/Admin/categoryManagement"
+import { ProgramManagement } from "@/components/layout/Admin/programManagement"
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
