@@ -6,9 +6,9 @@ import { AdminLogin } from "@/components/layout/Admin/AdminLogin"
 // import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
 // import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
 import { LogOut, Users, FolderOpen, Award } from "lucide-react"
-import { UserManagement } from "@/components/layout/Admin/userManagement"
-import { CategoryManagement } from "@/components/layout/Admin/categoryManagement"
-import { ProgramManagement } from "@/components/layout/Admin/programManagement"
+import { UserManagement } from "@/components/layout/Admin/UserManagement"
+import { CategoryManagement } from "@/components/layout/Admin/CategoryManagement"
+import { ProgramManagement } from "@/components/layout/Admin/ProgramManagement"
 
 export default function AdminDashboard() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
