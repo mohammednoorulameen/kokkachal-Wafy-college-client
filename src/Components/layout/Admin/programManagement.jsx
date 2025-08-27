@@ -229,9 +229,10 @@ const fetchPrograms = async () => {
                 <TableRow key={program._id}>
                   <TableCell className="font-medium">{program.programName}</TableCell>
                   <TableCell>{program.description}</TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     {categories.find((c) => c._id === program.category)?.category || "N/A"}
-                  </TableCell>
+                  </TableCell> */}
+                   <TableCell>{program.category?.category || "N/A"}</TableCell>
                   <TableCell>{new Date(program.createdAt).toLocaleDateString()}</TableCell>
                 </TableRow>
               ))}

@@ -25,6 +25,7 @@ export default function Home() {
       date: "August 20, 2025",
       position: "1st Place",
       members: "John Doe, Jane Smith, Mike Johnson",
+      score: 95,
     },
     {
       name: "Team Creative Sparks",
@@ -32,6 +33,7 @@ export default function Home() {
       date: "August 18, 2025",
       position: "2nd Place",
       members: "Alice Brown, Bob Wilson, Carol Davis",
+      score: 89,
     },
     {
       name: "Team Dynamic Performers",
@@ -39,6 +41,7 @@ export default function Home() {
       date: "August 15, 2025",
       position: "3rd Place",
       members: "Eve Adams, Frank Miller, Grace Lee",
+      score: 85,
     },
   ];
 
@@ -85,7 +88,7 @@ export default function Home() {
 
 
   // Refs for scrolling containers
-  const teamScrollRef = useRef(null);
+  // const teamScrollRef = useRef(null);
   const winnerScrollRef = useRef(null);
   const programScrollRef = useRef(null);
 
@@ -467,76 +470,34 @@ export default function Home() {
       
 
       {/* Latest Winning Teams Section with Horizontal Scrolling */}
-      <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
-              <Crown className="w-12 h-12 text-yellow-500" />
-              Latest Winning Teams
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Congratulations to our most recent team champions!
-            </p>
-          </div>
+     <section className="py-20 bg-gradient-to-br from-blue-50 to-indigo-100">
+  <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="text-center mb-12">
+      <h2 className="text-4xl md:text-5xl font-bold text-gray-800 mb-4 flex items-center justify-center gap-3">
+        <Crown className="w-12 h-12 text-yellow-500" />
+        Latest Winning Teams
+      </h2>
+      <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        Congratulations to our most recent team champions!
+      </p>
+    </div>
 
-          <div className="relative">
-            <button
-              onClick={() => scrollLeft(teamScrollRef)}
-              // className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
-               className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
-            >
-              <ChevronLeft className="w-8 h-8 text-blue-600" />
-            </button>
-            <div
-              ref={teamScrollRef}
-              className="flex overflow-x-auto scroll-smooth gap-8 pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent"
-            >
-              {latestTeams.map((team, index) => (
-                <div
-                  key={index}
-                  className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden hover:scale-105 border-l-4 border-yellow-500 min-w-[300px]"
-                >
-                  <div className="p-8">
-                    <div className="flex items-center justify-between mb-4">
-                      <Award className="w-8 h-8 text-yellow-500" />
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-bold ${
-                          team.position === "1st Place"
-                            ? "bg-yellow-100 text-yellow-800"
-                            : team.position === "2nd Place"
-                            ? "bg-gray-100 text-gray-800"
-                            : "bg-orange-100 text-gray-800"
-                        }`}
-                      >
-                        {team.position}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{team.name}</h3>
-                    <p className="text-gray-600 mb-2"><strong>Event:</strong> {team.event}</p>
-                    <p className="text-gray-600 mb-4"><strong>Date:</strong> {team.date}</p>
-                    <p className="text-gray-600 italic text-sm">
-                      <strong>Members:</strong> {team.members}
-                    </p>
-                    <Link
-                      to="/results"
-                      className="mt-6 inline-block text-blue-600 hover:text-blue-800 font-semibold transition-colors"
-                    >
-                      View Full Results →
-                    </Link>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <button
-              onClick={() => scrollRight(teamScrollRef)}
-              // className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 bg-white bg-opacity-80 hover:bg-opacity-100 rounded-full p-3 shadow-lg transition-all duration-300"
-               className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10   duration-300"
-            >
-              <ChevronRight className="w-8 h-8 text-blue-600" />
-            </button>
-          </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {latestTeams.map((team, index) => (
+        <div
+          key={index}
+          className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center border-l-4 border-yellow-500"
+        >
+          <h3 className="text-2xl font-bold text-gray-800">{team.name}</h3>
+          <p className="text-xl text-gray-600 mt-2">
+            <span className="font-semibold">Score: </span> {team.score}
+          </p>
         </div>
-      </section>
+      ))}
+    </div>
+  </div>
+</section>
+
 
     </div>
   );
