@@ -97,8 +97,8 @@
 //         </CardContent>
 //       </Card>
 
-//       {/* Toast container */}
-//       <Toaster position="top-right" reverseOrder={false} />
+      // {/* Toast container */}
+      // <Toaster position="top-right" reverseOrder={false} />
 //     </>
 //   )
 // }
@@ -243,6 +243,7 @@ import { Alert, AlertDescription } from "@/Components/ui/alert"
 import { Loader2, Shield } from "lucide-react"
 import PropTypes from "prop-types"
 import adminInstance from "@/axios/AdminInstance"
+import toast, { Toaster } from "react-hot-toast"
 
 const Adminlogin = ({ onLogin }) => {
   const [email, setEmail] = useState("")
@@ -264,17 +265,21 @@ console.log(email,password);
         // Save token in localStorage
         localStorage.setItem("adminToken", data.token)
         onLogin(data.token)
+         toast.success("Login Successful! Welcome back, Admin.")
       } else {
         setError(data.message || "Invalid credentials")
+        toast.error('Invalid credentials')
       }
     } catch (err) {
       setError(err.response?.data?.message || "Login failed. Please try again.")
+      toast.error(err.response?.data?.message || "Login failed. Please try again.") 
     } finally {
       setLoading(false)
     }
   }
 
   return (
+    <>
     <Card className="w-full max-w-md">
       <CardHeader className="text-center">
         <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
@@ -308,8 +313,8 @@ console.log(email,password);
             />
           </div>
           {error && (
-            <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
+            <Alert variant="destructive"  className="border-red-500 bg-red-50 text-red-600">
+              <AlertDescription className="text-red-600 font-medium">{error}</AlertDescription>
             </Alert>
           )}
           <Button type="submit" className="w-full" disabled={loading}>
@@ -325,6 +330,9 @@ console.log(email,password);
         </form>
       </CardContent>
     </Card>
+     {/* Toast container */}
+      <Toaster position="top-right" reverseOrder={false} />
+      </>
   )
 }
 
