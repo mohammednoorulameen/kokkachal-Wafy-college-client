@@ -1,14 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { AdminLogin } from "@/Components/layout/Admin/AdminLogin"
-// import { UserManagement } from "@/Components/layout/Admin/userManagement"
-// import { CategoryManagement } from "@/Components/layout/Admin/categoryManagement"
-// import { ProgramManagement } from "@/Components/layout/Admin/programManagement"
 import { LogOut, Users, FolderOpen, Award } from "lucide-react"
-import { UserManagement } from "@/Components/layout/Admin/userManagement"
-import { CategoryManagement } from "@/Components/layout/Admin/CategoryManagement"
-import { ProgramManagement } from "@/Components/layout/Admin/ProgramManagement"
+import Adminlogin from "@/Components/layout/Admin/AdminLogin"
+import UserManagement from "@/Components/layout/Admin/UserManagement"
+import Categorymanagement from "@/Components/layout/Admin/categoryManagement"
+import Programmanagement from "@/Components/layout/Admin/programManagement"
 
 const  AdminHomePage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -38,7 +35,7 @@ const  AdminHomePage = () => {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <AdminLogin onLogin={handleLogin} />
+        <Adminlogin onLogin={handleLogin} />
       </div>
     )
   }
@@ -99,8 +96,8 @@ const  AdminHomePage = () => {
         {/* Tab Content */}
         <div>
           {activeTab === "users" && <UserManagement token={token} />}
-          {activeTab === "categories" && <CategoryManagement token={token} />}
-          {activeTab === "programs" && <ProgramManagement token={token} />}
+          {activeTab === "categories" && <Categorymanagement token={token} />}
+          {activeTab === "programs" && <Programmanagement token={token} />}
         </div>
       </main>
     </div>
