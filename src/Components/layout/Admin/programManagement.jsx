@@ -1,6 +1,6 @@
 "use client"
 
-import  { useState, useEffect } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card"
 import { Button } from "@/Components/ui/button"
 import { Input } from "@/Components/ui/input"
@@ -17,13 +17,12 @@ import {
   DialogTrigger,
 } from "@/Components/ui/dialog"
 import { Alert, AlertDescription } from "@/Components/ui/alert"
-import { Plus, Loader2 } from "lucide-react"
+import { Plus, Loader2, Search } from "lucide-react"
 import toast, { Toaster } from "react-hot-toast"
 import adminInstance from "@/axios/AdminInstance"
 import { Formik, Form, Field, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import PropTypes from "prop-types"
-
 
 const Programmanagement = ({ token }) => {
   const [programs, setPrograms] = useState([])
@@ -31,35 +30,35 @@ const Programmanagement = ({ token }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const [searchTerm, setSearchTerm] = useState("")
+  const [visibleCount, setVisibleCount] = useState(10) // 🔑 Show 10 at start
 
-  console.log(programs)
   useEffect(() => {
     fetchPrograms()
     fetchCategories()
   }, [])
-  
-const fetchPrograms = async () => {
-  setLoading(true);
-  try {
-    const { data } = await adminInstance.get("/admin-get-programs", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
 
-    if (data.success) {
-      setPrograms(data.data); // now data.data exists
-    } else {
-      setError(data.message);
-      toast.error(data.message);
+  const fetchPrograms = async () => {
+    setLoading(true)
+    try {
+      const { data } = await adminInstance.get("/admin-get-programs", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+
+      if (data.success) {
+        setPrograms(data.data)
+      } else {
+        setError(data.message)
+        toast.error(data.message)
+      }
+    // eslint-disable-next-line no-unused-vars
+    } catch (err) {
+      setError("Failed to fetch programs")
+      toast.error("Failed to fetch programs")
+    } finally {
+      setLoading(false)
     }
-  // eslint-disable-next-line no-unused-vars
-  } catch (err) {
-    setError("Failed to fetch programs");
-    toast.error("Failed to fetch programs");
-  } finally {
-    setLoading(false);
   }
-};
-
 
   const fetchCategories = async () => {
     try {
@@ -89,9 +88,9 @@ const fetchPrograms = async () => {
       })
       if (data.success) {
         toast.success("Program added successfully")
-        setPrograms([...programs, data.data])
         resetForm()
         setIsAddDialogOpen(false)
+        fetchPrograms() // 🔄 Refetch programs after adding
       } else {
         toast.error(data.message)
       }
@@ -100,6 +99,17 @@ const fetchPrograms = async () => {
       toast.error("Failed to add program")
     }
   }
+
+  // 🔍 Filtered programs based on search
+  const filteredPrograms = programs.filter(
+    (program) =>
+      program.programName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      program.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      program.category?.category?.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  // Show only limited number
+  const visiblePrograms = filteredPrograms.slice(0, visibleCount)
 
   if (loading) {
     return (
@@ -194,7 +204,7 @@ const fetchPrograms = async () => {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button type="submit" className="w-full bg-blue-50  hover:bg-black hover:text-white" disabled={isSubmitting} >
                     {isSubmitting ? "Adding..." : "Add Program"}
                   </Button>
                 </Form>
@@ -202,6 +212,21 @@ const fetchPrograms = async () => {
             </Formik>
           </DialogContent>
         </Dialog>
+      </div>
+
+      {/* 🔍 Search bar */}
+      <div className="flex items-center gap-2">
+        <Search className="h-5 w-5 text-gray-500" />
+        <Input
+          type="text"
+          placeholder="Search programs..."
+          value={searchTerm}
+          onChange={(e) => {
+            setSearchTerm(e.target.value)
+            setVisibleCount(10) // reset count on search
+          }}
+          className="max-w-sm"
+        />
       </div>
 
       {error && (
@@ -219,6 +244,7 @@ const fetchPrograms = async () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>SNo</TableHead>
                 <TableHead>Program Name</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>Category</TableHead>
@@ -226,29 +252,48 @@ const fetchPrograms = async () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {programs.map((program) => (
-                <TableRow key={program._id}>
-                  <TableCell className="font-medium">{program.programName}</TableCell>
-                  <TableCell>{program.description}</TableCell>
-                  {/* <TableCell>
-                    {categories.find((c) => c._id === program.category)?.category || "N/A"}
-                  </TableCell> */}
-                   <TableCell>{program.category?.category || "N/A"}</TableCell>
-                  <TableCell>{new Date(program.createdAt).toLocaleDateString()}</TableCell>
+              {visiblePrograms.length > 0 ? (
+                visiblePrograms.map((program, index) => (
+                  <TableRow key={program._id}>
+                    <TableCell className="font-medium">{index + 1}</TableCell>
+                    <TableCell className="font-medium">{program.programName}</TableCell>
+                    <TableCell>{program.description}</TableCell>
+                    <TableCell>{program.category?.category || "N/A"}</TableCell>
+                    <TableCell>{new Date(program.createdAt).toLocaleDateString()}</TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center text-gray-500">
+                    No programs found
+                  </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
+
+          {/* 👇 View More button with fallback text */}
+          {filteredPrograms.length > 0 && (
+            <div className="flex justify-center mt-4">
+              {visibleCount < filteredPrograms.length ? (
+                <Button onClick={() => setVisibleCount((prev) => prev + 10)}>
+                  View More
+                </Button>
+              ) : (
+                <p className="text-gray-500 text-sm">No more programs to show</p>
+              )}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
   )
 }
 
- // Add prop types validation
- Programmanagement.propTypes = {
-   token: PropTypes.string.isRequired,
- }
+Programmanagement.propTypes = {
+  token: PropTypes.string.isRequired,
+}
+
+export default Programmanagement
 
 
- export default Programmanagement

@@ -146,7 +146,7 @@ import PropTypes from "prop-types"
                     <ErrorMessage name="description" component="div" className="text-red-500 text-sm" />
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={isSubmitting}>
+                  <Button type="submit" className="w-full bg-blue-50  hover:bg-black hover:text-white" disabled={isSubmitting}>
                     {isSubmitting ? "Adding..." : "Add Category"}
                   </Button>
                 </Form>
