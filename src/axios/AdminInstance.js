@@ -3,8 +3,8 @@ import axios from 'axios';
 
 // Create an Axios instance
 const adminInstance = axios.create({
-  // baseURL: 'http://localhost:4040/api/admin', // Use your backend admin base route
-  baseURL: 'https://kokkachal-wafy-college-server.onrender.com/api/admin', // Use your backend admin base route
+  baseURL: 'http://localhost:4040/api/admin', // Use your backend admin base route
+  // baseURL: 'https://kokkachal-wafy-college-server.onrender.com/api/admin', // Use your backend admin base route
 
   headers: {
     "Content-Type": "application/json",
