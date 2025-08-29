@@ -1,274 +1,450 @@
 "use client";
 
-import { useState } from "react";
-import PropTypes from "prop-types";
-import {
-  Music,
-  Drama,
-  Fence as Dance,
-  Trophy,
-  Award,
-  Star,
-  ChevronDown,
-  Filter,
-} from "lucide-react";
+import { useEffect, useState } from "react";
+import userInstance from "@/axios/UserInstance";
 
 export default function ProgramsPage() {
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [displayCount, setDisplayCount] = useState(12);
+  const [allPrograms, setAllPrograms] = useState([]);
+  const [displayCount, setDisplayCount] = useState(10);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
-  const allPrograms = [
-    {
-      icon: Music,
-      title: "Classical Vocal Solo",
-      time: "10:00 AM - 11:00 AM",
-      description: "Individual classical music performances showcasing vocal excellence",
-      category: "Music",
-      type: "onstage",
-      gradient: "from-primary to-chart-2",
-      winner: "first",
-      winnerGroup: "St. Mary's College",
-    },
-    {
-      icon: Dance,
-      title: "Classical Dance Solo",
-      time: "3:00 PM - 4:00 PM",
-      description: "Traditional Indian classical dance forms",
-      category: "Dance",
-      type: "onstage",
-      gradient: "from-secondary to-chart-3",
-      winner: "first",
-      winnerGroup: "Maharaja's College",
-    },
-    {
-      icon: Drama,
-      title: "Mono Acting",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "onstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
-    {
-      icon: Drama,
-      title: "Mono Acting",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "onstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
-    {
-      icon: Drama,
-      title: "Mono Acting",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "offstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
-     {
-      icon: Drama,
-      title: "Mono Acting",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "offstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
-     {
-      icon: Drama,
-      title: "qirahath",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "offstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
-     {
-      icon: Drama,
-      title: "speech malayalam",
-      time: "9:00 AM - 10:00 AM",
-      description: "Solo theatrical performances showcasing acting skills",
-      category: "Theatre",
-      type: "offstage",
-      gradient: "from-chart-3 to-chart-4",
-      winner: "first",
-      winnerGroup: "Fatima Mata College",
-    },
+  // Map of category IDs or levels to names
+  // const categoryMap = {
+  //   junior: "Junior",
+  //   senior: "Senior",
+  //   // Music: "Music",
+  //   // Dance: "Dance",
+  //   // Theatre: "Theatre",
+  // };
 
-    // Add more programs as needed
-  ];
+  // Fetch all programs
+  useEffect(() => {
+    const fetchPrograms = async () => {
+      try {
+        const res = await userInstance.get("/get-all-programs");
+        if (res.data.success) {
+          setAllPrograms(res.data.data);
+        }
+      } catch (err) {
+        console.error("Failed to fetch programs:", err);
+      }
+    };
+    fetchPrograms();
+  }, []);
 
-
-  // Filter by category/type
-  const filteredPrograms = allPrograms.filter((program) => {
-    if (selectedCategory === "all") return true;
-    if (selectedCategory === "onstage") return program.type === "onstage";
-    if (selectedCategory === "offstage") return program.type === "offstage";
-    return program.category === selectedCategory;
-  });
-
-  // Further filter by search term
-  const searchedPrograms = filteredPrograms.filter((program) =>
-    program.title.toLowerCase().includes(searchTerm.toLowerCase())
+  // Filter by search term
+  const searchedPrograms = allPrograms.filter((program) =>
+    program.programName?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const displayedPrograms = searchedPrograms.slice(0, displayCount);
+  // Filter by category / level
+  const filteredPrograms =
+    selectedCategory === "all"
+      ? searchedPrograms
+      : searchedPrograms.filter((program) => {
+          const programCategory =
+            program.category?.category?.toLowerCase() || program.category?.toLowerCase() || "";
+          return (
+            programCategory === selectedCategory.toLowerCase() ||
+            program.level?.toLowerCase() === selectedCategory.toLowerCase() // if you have "level" field
+          );
+        });
 
-  // Winner Badge Component
-  const WinnerBadge = ({ winner }) => {
-    if (!winner) return null;
-
-    const badgeConfig = {
-      first: { icon: Trophy, color: "text-yellow-600 bg-yellow-100", label: "1st Place" },
-      second: { icon: Award, color: "text-gray-600 bg-gray-100", label: "2nd Place" },
-      third: { icon: Star, color: "text-orange-600 bg-orange-100", label: "3rd Place" },
-    };
-
-    const config = badgeConfig[winner];
-    const Icon = config.icon;
-
-    return (
-      <div className={`${config.color} px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 mb-2`}>
-        <Icon className="w-4 h-4" />
-        {config.label}
-      </div>
-    );
-  };
-
-  WinnerBadge.propTypes = {
-    winner: PropTypes.string.isRequired,
-  };
+  // Programs to display
+  const displayedPrograms = filteredPrograms.slice(0, displayCount);
 
   return (
     <div className="min-h-screen bg-background">
-      <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background">
-        <div className="max-w-6xl mx-auto px-4 text-center mb-4">
-          <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right">
-            Festival Programs
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right delay-150">
-            Discover diverse artistic programs and competitions that make UMMATHEE a celebration of creativity
-          </p>
-        </div>
+      <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background text-center">
+        <h1 className="text-5xl font-bold mb-6">Festival Programs</h1>
+        <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
+          Discover diverse artistic programs and competitions that make UMMATHEE a celebration of creativity
+        </p>
 
-        {/* Filter Buttons */}
-        <div className="flex flex-wrap justify-center gap-4 mb-4">
-          {[
-            { key: "all", label: "All Programs" },
-            { key: "onstage", label: "Onstage" },
-            { key: "offstage", label: "Offstage" },
-            { key: "Music", label: "Music" },
-            { key: "Dance", label: "Dance" },
-            { key: "Theatre", label: "Theatre" },
-          ].map((category) => (
+        {/* Search */}
+        <input
+          type="text"
+          placeholder="Search programs..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border rounded-lg px-4 py-2 shadow-sm mb-6"
+        />
+
+        {/* Categories */}
+        {/* <div className="flex flex-wrap justify-center gap-4 mb-12">
+          {["all", "Junior", "Senior"].map((cat) => (
             <button
-              key={category.key}
-              onClick={() => setSelectedCategory(category.key)}
-              className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
-                selectedCategory === category.key
-                  ? "bg-primary text-primary-foreground shadow-lg scale-105"
-                  : "bg-card text-card-foreground hover:bg-primary/10 hover:scale-105"
+              key={cat}
+              onClick={() => {
+                setSelectedCategory(cat);
+                setDisplayCount(10); // Reset display count on filter
+              }}
+              className={`px-4 py-2 rounded-full ${
+                selectedCategory === cat ? "bg-primary text-black border"   : "bg-gray-200"
               }`}
             >
-              <Filter className="w-4 h-4" />
-              {category.label}
+              {cat}
             </button>
           ))}
-        </div>
+        </div> */}
+        <div className="flex flex-wrap justify-center gap-4 mb-12">
+  {["all", "Junior", "Senior"].map((cat) => {
+    const isSelected = selectedCategory.toLowerCase() === cat.toLowerCase();
+    return (
+      <button
+        key={cat}
+        onClick={() => {
+          setSelectedCategory(cat);
+          setDisplayCount(10); // reset display count on filter
+        }}
+        className={`px-4 py-2 rounded-full border transition ${
+          isSelected
+            ? "bg-primary text-black border-black"
+            : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-primary/20"
+        }`}
+      >
+        {cat}
+      </button>
+    );
+  })}
+</div>
 
-        {/* Search Box */}
-        <div className="flex justify-center  max-w-md mx-auto mb-12">
-          <input
-            type="text"
-            placeholder="Search programs..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            // className="w-full md:max-w-sm border rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition"
-             className="w-full max-w-xs md:max-w-sm lg:max-w-md border rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition"
-          />
-        </div>
       </section>
 
-      {/* Programs Grid */}
-      <section className="py-20">
-        <div className="max-w-6xl mx-auto px-4">
-          <p className="text-lg text-muted-foreground text-center mb-8">
-            Showing {displayedPrograms.length} of {searchedPrograms.length} programs
-          </p>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {displayedPrograms.map((program, index) => {
-              const Icon = program.icon;
-              return (
-                <div key={index} className="group animate-rotate-in" style={{ animationDelay: `${index * 50}ms` }}>
-                  <div className="bg-card rounded-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-border relative overflow-hidden">
-                    <div className="absolute top-4 right-4">
-                      <WinnerBadge winner={program.winner} />
-                    </div>
-
-                    <div
-                      className={`bg-gradient-to-r ${program.gradient} w-16 h-16 rounded-lg flex items-center justify-center mb-6 animate-pulse-glow`}
-                    >
-                      <Icon className="w-8 h-8 text-white" />
-                    </div>
-
-                    <div className="mb-4 flex flex-wrap gap-2">
-                      <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
-                        {program.category}
-                      </span>
-                      <span
-                        className={`px-3 py-1 rounded-full text-sm font-medium ${
-                          program.type === "onstage" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
-                        }`}
-                      >
-                        {program.type === "onstage" ? "On Stage" : "Off Stage"}
-                      </span>
-                    </div>
-
-                    <h3 className="text-xl font-bold mb-2 text-card-foreground">{program.title}</h3>
-                    <p className="text-primary font-semibold mb-3">{program.time}</p>
-                    <p className="text-muted-foreground leading-relaxed mb-4">{program.description}</p>
-
-                    <div className="mt-6 pt-4 border-t border-border">
-                      <button className="text-primary hover:text-primary/80 font-semibold group-hover:translate-x-1 transition-transform duration-300">
-                        Learn More →
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+      {/* Programs */}
+      <section className="max-w-6xl mx-auto px-4 grid md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+        {displayedPrograms.map((program) => (
+          <div
+            key={program._id}
+            className="bg-white rounded-xl p-6 shadow hover:shadow-lg transition"
+          >
+            <h3 className="text-xl font-bold mb-2">{program.programName}</h3>
+            <p className="text-muted-foreground mb-2">{program.description}</p>
+            <p className="text-sm text-gray-500 mb-2">
+              Created At: {new Date(program.createdAt).toLocaleDateString()}
+            </p>
+            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+              {program.category?.category || program.level || program.category || "Uncategorized"}
+            </span>
           </div>
-
-          {displayCount < searchedPrograms.length && (
-            <div className="text-center mt-12">
-              <button
-                onClick={() => setDisplayCount((prev) => Math.min(prev + 12, searchedPrograms.length))}
-                className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 flex items-center gap-2 mx-auto"
-              >
-                Load More Programs
-                <ChevronDown className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-        </div>
+        ))}
       </section>
+
+      {/* Load More Button */}
+      {displayCount < filteredPrograms.length && (
+        <div className="text-center mb-20">
+          <button
+            onClick={() => setDisplayCount((prev) => prev + 10)}
+            className="bg-primary text-black border px-8 py-3 rounded-full font-semibold hover:bg-primary/90 transition"
+          >
+            View More
+          </button>
+        </div>
+      )}
     </div>
   );
 }
+
+
+// "use client";
+
+// import { useEffect, useState } from "react";
+// import PropTypes from "prop-types";
+// import {
+//   // Music,
+//   // Drama,
+//   // Fence as Dance,
+//   Trophy,
+//   Award,
+//   Star,
+//   ChevronDown,
+//   Filter,
+// } from "lucide-react";
+// import userInstance from "@/axios/UserInstance";
+
+// export default function ProgramsPage() {
+//   const [selectedCategory, setSelectedCategory] = useState("all");
+//   const [displayCount, setDisplayCount] = useState(12);
+//   const [searchTerm, setSearchTerm] = useState("");
+//   const [allPrograms, setAllPrograms] = useState([]);
+
+//   console.log(allPrograms)
+
+//   // const allPrograms = [
+//   //   {
+//   //     icon: Music,
+//   //     title: "Classical Vocal Solo",
+//   //     time: "10:00 AM - 11:00 AM",
+//   //     description: "Individual classical music performances showcasing vocal excellence",
+//   //     category: "Music",
+//   //     type: "onstage",
+//   //     gradient: "from-primary to-chart-2",
+//   //     winner: "first",
+//   //     winnerGroup: "St. Mary's College",
+//   //   },
+//   //   {
+//   //     icon: Dance,
+//   //     title: "Classical Dance Solo",
+//   //     time: "3:00 PM - 4:00 PM",
+//   //     description: "Traditional Indian classical dance forms",
+//   //     category: "Dance",
+//   //     type: "onstage",
+//   //     gradient: "from-secondary to-chart-3",
+//   //     winner: "first",
+//   //     winnerGroup: "Maharaja's College",
+//   //   },
+//   //   {
+//   //     icon: Drama,
+//   //     title: "Mono Acting",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "onstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+//   //   {
+//   //     icon: Drama,
+//   //     title: "Mono Acting",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "onstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+//   //   {
+//   //     icon: Drama,
+//   //     title: "Mono Acting",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "offstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+//   //    {
+//   //     icon: Drama,
+//   //     title: "Mono Acting",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "offstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+//   //    {
+//   //     icon: Drama,
+//   //     title: "qirahath",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "offstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+//   //    {
+//   //     icon: Drama,
+//   //     title: "speech malayalam",
+//   //     time: "9:00 AM - 10:00 AM",
+//   //     description: "Solo theatrical performances showcasing acting skills",
+//   //     category: "Theatre",
+//   //     type: "offstage",
+//   //     gradient: "from-chart-3 to-chart-4",
+//   //     winner: "first",
+//   //     winnerGroup: "Fatima Mata College",
+//   //   },
+
+//   //   // Add more programs as needed
+//   // ];
+
+
+//   // get all program
+
+//    useEffect(() => {
+//   const fetchPrograms = async () => {
+//     try {
+//       const res = await userInstance.get("/get-all-programs");
+//       if (res.data.success) {
+//         setAllPrograms(res.data.data); // assuming your API response has a `data` field
+//       }
+//     } catch (err) {
+//       console.error("Failed to fetch programs:", err);
+//     }
+//   };
+
+//   fetchPrograms();
+// }, []);
+
+
+//   // Filter by category/type
+//   const filteredPrograms = allPrograms.filter((program) => {
+//     if (selectedCategory === "all") return true;
+//     if (selectedCategory === "onstage") return program.type === "onstage";
+//     if (selectedCategory === "offstage") return program.type === "offstage";
+//     return program.category === selectedCategory;
+//   });
+
+//   // Further filter by search term
+//   const searchedPrograms = filteredPrograms.filter((program) =>
+//     program.programName.toLowerCase().includes(searchTerm.toLowerCase())
+//   );
+
+//   const displayedPrograms = searchedPrograms.slice(0, displayCount);
+
+//   // Winner Badge Component
+//   const WinnerBadge = ({ winner }) => {
+//     if (!winner) return null;
+
+//     const badgeConfig = {
+//       first: { icon: Trophy, color: "text-yellow-600 bg-yellow-100", label: "1st Place" },
+//       second: { icon: Award, color: "text-gray-600 bg-gray-100", label: "2nd Place" },
+//       third: { icon: Star, color: "text-orange-600 bg-orange-100", label: "3rd Place" },
+//     };
+
+    
+
+//     const config = badgeConfig[winner];
+//     const Icon = config.icon;
+
+//     return (
+//       <div className={`${config.color} px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1 mb-2`}>
+//         <Icon className="w-4 h-4" />
+//         {config.label}
+//       </div>
+//     );
+//   };
+
+//   WinnerBadge.propTypes = {
+//     winner: PropTypes.string.isRequired,
+//   };
+
+ 
+
+
+//   return (
+//     <div className="min-h-screen bg-background">
+//       <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background">
+//         <div className="max-w-6xl mx-auto px-4 text-center mb-4">
+//           <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right">
+//             Festival Programs
+//           </h1>
+//           <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right delay-150">
+//             Discover diverse artistic programs and competitions that make UMMATHEE a celebration of creativity
+//           </p>
+//         </div>
+
+//         {/* Filter Buttons */}
+//         <div className="flex flex-wrap justify-center gap-4 mb-4">
+//           {[
+//             { key: "all", label: "All Programs" },
+//             { key: "onstage", label: "Onstage" },
+//             { key: "offstage", label: "Offstage" },
+//             { key: "Music", label: "Music" },
+//             { key: "Dance", label: "Dance" },
+//             { key: "Theatre", label: "Theatre" },
+//           ].map((category) => (
+//             <button
+//               key={category.key}
+//               onClick={() => setSelectedCategory(category.key)}
+//               className={`px-4 py-2 rounded-full font-medium transition-all duration-300 flex items-center gap-2 ${
+//                 selectedCategory === category.key
+//                   ? "bg-primary text-primary-foreground shadow-lg scale-105"
+//                   : "bg-card text-card-foreground hover:bg-primary/10 hover:scale-105"
+//               }`}
+//             >
+//               <Filter className="w-4 h-4" />
+//               {category.label}
+//             </button>
+//           ))}
+//         </div>
+
+//         {/* Search Box */}
+//         <div className="flex justify-center  max-w-md mx-auto mb-12">
+//           <input
+//             type="text"
+//             placeholder="Search programs..."
+//             value={searchTerm}
+//             onChange={(e) => setSearchTerm(e.target.value)}
+//             // className="w-full md:max-w-sm border rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition"
+//              className="w-full max-w-xs md:max-w-sm lg:max-w-md border rounded-lg px-4 py-2 shadow-sm hover:shadow-md transition"
+//           />
+//         </div>
+//       </section>
+
+//       {/* Programs Grid */}
+//       <section className="py-20">
+//         <div className="max-w-6xl mx-auto px-4">
+//           <p className="text-lg text-muted-foreground text-center mb-8">
+//             Showing {displayedPrograms.length} of {searchedPrograms.length} programs
+//           </p>
+
+//           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+//             {displayedPrograms.map((program, index) => {
+//               const Icon = program.icon;
+//               return (
+//                 <div key={index} className="group animate-rotate-in" style={{ animationDelay: `${index * 50}ms` }}>
+//                   <div className="bg-card rounded-xl p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 border border-border relative overflow-hidden">
+//                     <div className="absolute top-4 right-4">
+//                       <WinnerBadge winner={program.winner} />
+//                     </div>
+
+//                     <div
+//                       className={`bg-gradient-to-r ${program.gradient} w-16 h-16 rounded-lg flex items-center justify-center mb-6 animate-pulse-glow`}
+//                     >
+//                       <Icon className="w-8 h-8 text-white" />
+//                     </div>
+
+//                     <div className="mb-4 flex flex-wrap gap-2">
+//                       <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+//                         {program.category}
+//                       </span>
+//                       <span
+//                         className={`px-3 py-1 rounded-full text-sm font-medium ${
+//                           program.type === "onstage" ? "bg-green-100 text-green-700" : "bg-blue-100 text-blue-700"
+//                         }`}
+//                       >
+//                         {program.type === "onstage" ? "On Stage" : "Off Stage"}
+//                       </span>
+//                     </div>
+
+//                     <h3 className="text-xl font-bold mb-2 text-card-foreground">{program.programName}</h3>
+//                     <p className="text-primary font-semibold mb-3">{program.createdAt}</p>
+//                     <p className="text-muted-foreground leading-relaxed mb-4">{program.description}</p>
+//                      <span>{program.category?.category || "Uncategorized"}</span>
+//                     <div className="mt-6 pt-4 border-t border-border">
+//                       <button className="text-primary hover:text-primary/80 font-semibold group-hover:translate-x-1 transition-transform duration-300">
+//                         Learn More →
+//                       </button>
+//                     </div>
+//                   </div>
+//                 </div>
+//               );
+//             })}
+//           </div>
+
+//           {displayCount < searchedPrograms.length && (
+//             <div className="text-center mt-12">
+//               <button
+//                 onClick={() => setDisplayCount((prev) => Math.min(prev + 12, searchedPrograms.length))}
+//                 className="bg-primary text-primary-foreground px-8 py-3 rounded-full font-semibold hover:bg-primary/90 transition-all duration-300 hover:scale-105 flex items-center gap-2 mx-auto"
+//               >
+//                 Load More Programs
+//                 <ChevronDown className="w-5 h-5" />
+//               </button>
+//             </div>
+//           )}
+//         </div>
+//       </section>
+//     </div>
+//   );
+// }
 
 
 

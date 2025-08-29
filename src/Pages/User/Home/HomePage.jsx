@@ -13,82 +13,83 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@/Components/ui/button";
+import userInstance from '@/axios/UserInstance'
 
 export default function Home() {
   // Mock data for latest winning teams and students
-  const latestTeams = [
-    {
-      name: "Team Alpha Innovators",
-      event: "Tech Innovation Challenge",
-      date: "August 20, 2025",
-      position: "1st Place",
-      members: "John Doe, Jane Smith, Mike Johnson",
-      score: 95,
-    },
-    {
-      name: "Team Creative Sparks",
-      event: "Design Competition",
-      date: "August 18, 2025",
-      position: "2nd Place",
-      members: "Alice Brown, Bob Wilson, Carol Davis",
-      score: 89,
-    },
-    {
-      name: "Team Dynamic Performers",
-      event: "Drama Festival",
-      date: "August 15, 2025",
-      position: "3rd Place",
-      members: "Eve Adams, Frank Miller, Grace Lee",
-      score: 85,
-    },
-  ];
+  // const latestTeams = [
+  //   {
+  //     name: "Team Alpha Innovators",
+  //     event: "Tech Innovation Challenge",
+  //     date: "August 20, 2025",
+  //     position: "1st Place",
+  //     members: "John Doe, Jane Smith, Mike Johnson",
+  //     score: 95,
+  //   },
+  //   {
+  //     name: "Team Creative Sparks",
+  //     event: "Design Competition",
+  //     date: "August 18, 2025",
+  //     position: "2nd Place",
+  //     members: "Alice Brown, Bob Wilson, Carol Davis",
+  //     score: 89,
+  //   },
+  //   {
+  //     name: "Team Dynamic Performers",
+  //     event: "Drama Festival",
+  //     date: "August 15, 2025",
+  //     position: "3rd Place",
+  //     members: "Eve Adams, Frank Miller, Grace Lee",
+  //     score: 85,
+  //   },
+  // ];
 
-  const latestWinners = [
-    {
-      name: "Sarah Johnson",
-      event: "Individual Art Exhibition",
-      category: "Painting",
-      date: "August 22, 2025",
-      position: "1st Place",
-    },
-    {
-      name: "Michael Chen",
-      event: "Poetry Recitation",
-      category: "Literature",
-      date: "August 21, 2025",
-      position: "2nd Place",
-    },
-    {
-      name: "Lisa Rodriguez",
-      event: "Science Fair",
-      category: "STEM Project",
-      date: "August 19, 2025",
-      position: "3rd Place",
-    },
-    {
-      name: "Lisa Rodriguez",
-      event: "Science Fair",
-      category: "STEM Project",
-      date: "August 19, 2025",
-      position: "3rd Place",
-    },
-    {
-      name: "Lisa Rodriguez",
-      event: "Science Fair",
-      category: "STEM Project",
-      date: "August 19, 2025",
-      position: "3rd Place",
-    },
-  ];
+  // const latestWinners = [
+  //   {
+  //     name: "Sarah Johnson",
+  //     event: "Individual Art Exhibition",
+  //     category: "Painting",
+  //     date: "August 22, 2025",
+  //     position: "1st Place",
+  //   },
+  //   {
+  //     name: "Michael Chen",
+  //     event: "Poetry Recitation",
+  //     category: "Literature",
+  //     date: "August 21, 2025",
+  //     position: "2nd Place",
+  //   },
+  //   {
+  //     name: "Lisa Rodriguez",
+  //     event: "Science Fair",
+  //     category: "STEM Project",
+  //     date: "August 19, 2025",
+  //     position: "3rd Place",
+  //   },
+  //   {
+  //     name: "Lisa Rodriguez",
+  //     event: "Science Fair",
+  //     category: "STEM Project",
+  //     date: "August 19, 2025",
+  //     position: "3rd Place",
+  //   },
+  //   {
+  //     name: "Lisa Rodriguez",
+  //     event: "Science Fair",
+  //     category: "STEM Project",
+  //     date: "August 19, 2025",
+  //     position: "3rd Place",
+  //   },
+  // ];
 
-
+   const [latestTeams, setLatestTeams] = useState([]);
+  const [latestWinners, setLatestWinners] = useState([]);
     const navigate = useNavigate();
-
-
+console.log(latestWinners)
+console.log('latestTeams', latestTeams)
   // Refs for scrolling containers
-  // const teamScrollRef = useRef(null);
   const winnerScrollRef = useRef(null);
   const programScrollRef = useRef(null);
 
@@ -105,6 +106,34 @@ export default function Home() {
     }
   };
 
+
+  // Fetch data from APIs
+  useEffect(() => {
+    const fetchWinners = async () => {
+      try {
+        const res = await userInstance.get("/get-winnig-studets");
+        const data =  res.data;
+        if (data.success) setLatestWinners(data.data);
+      } catch (err) {
+        console.error("Failed to fetch winning students:", err);
+      }
+    };
+
+    const fetchTeams = async () => {
+      try {
+        const res = await userInstance.get("/get-winning-teams");
+        const data =  res.data;
+        if (data.success) setLatestTeams(data.data);
+      } catch (err) {
+        console.error("Failed to fetch winning teams:", err);
+      }
+    };
+
+    fetchWinners();
+    fetchTeams();
+  }, []);
+
+
   // Custom arrow components for carousel
   const renderArrowPrev = (onClickHandler, hasPrev, label) =>
     hasPrev && (
@@ -118,6 +147,8 @@ export default function Home() {
         <ChevronLeft className="w-8 h-8 text-blue-600" />
       </button>
     );
+
+    // carosel arrow next
 
   const renderArrowNext = (onClickHandler, hasNext, label) =>
     hasNext && (
@@ -204,80 +235,7 @@ export default function Home() {
             </div>
           </Carousel>
         </div>
-      </section>
-
-      {/* <section className="relative py-8">
-        <div className="max-w-6xl mx-auto px-4">
-          <Carousel
-            autoPlay
-            infiniteLoop
-            showThumbs={false}
-            showStatus={false}
-            showArrows={true}
-            renderArrowPrev={renderArrowPrev}
-            renderArrowNext={renderArrowNext}
-            interval={5000}
-            transitionTime={600}
-            className="rounded-3xl overflow-hidden shadow-2xl"
-          >
-            <div className="relative h-[600px]">
-              <img
-                src="logoLonge1.jpeg"
-                alt="Festival Performance"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Welcome to UMMATHEE</h2>
-                  <p className="text-lg">Experience the joy of art and culture</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative h-[600px]">
-              <img
-                src="logoLonge2.jpeg"
-                alt="Cultural Dance"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Celebrate Creativity</h2>
-                  <p className="text-lg">Join our vibrant community</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative h-[600px]">
-              <img
-                src="logoLonge3.jpeg"
-                alt="Art Exhibition"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Discover Talent</h2>
-                  <p className="text-lg">Explore our amazing programs</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative h-[600px]">
-              <img
-                src="logoLonge4.jpeg"
-                alt="Art Exhibition"
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                <div className="text-center text-white">
-                  <h2 className="text-3xl md:text-4xl font-bold mb-4">Discover Talent</h2>
-                  <p className="text-lg">Explore our amazing programs</p>
-                </div>
-              </div>
-            </div>
-          </Carousel>
-        </div>
-      </section> */}
-
-
-      
+      </section>      
 
       <section>
         <div className="flex justify-center gap-x-2">
@@ -324,9 +282,9 @@ export default function Home() {
                       <Award className="w-8 h-8" />
                     </div>
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">{winner.name}</h3>
-                    <p className="text-gray-600 mb-2"><strong>Event:</strong> {winner.event}</p>
-                    <p className="text-gray-600 mb-2"><strong>Category:</strong> {winner.category}</p>
-                    <p className="text-gray-600 mb-4"><strong>Date:</strong> {winner.date}</p>
+                    <p className="text-gray-600 mb-2"><strong>ChessNumber :</strong> {winner.chessNumber}</p>
+                    <p className="text-gray-600 mb-2"><strong>Group:</strong> {winner.team}</p>
+                    <p className="text-gray-600 mb-4"><strong>points:</strong> {winner.points}</p>
                     <span
                       className={`px-4 py-2 rounded-full text-sm font-bold ${
                         winner.position === "1st Place"
@@ -488,9 +446,9 @@ export default function Home() {
           key={index}
           className="bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center justify-center border-l-4 border-yellow-500"
         >
-          <h3 className="text-2xl font-bold text-gray-800">{team.name}</h3>
+          <h3 className="text-2xl font-bold text-gray-800">{team.teamName}</h3>
           <p className="text-xl text-gray-600 mt-2">
-            <span className="font-semibold">Score: </span> {team.score}
+            <span className="font-semibold">Score: </span> {team.totalPoints}
           </p>
         </div>
       ))}
