@@ -494,7 +494,7 @@ const UserManagement = ({ token }) => {
               {visibleUsers.map((user, index) => (
                 <TableRow key={user._id}>
                   <TableCell>{index + 1}</TableCell>
-                  <TableCell>{user.name}</TableCell>
+                  <TableCell>{user.name.toUpperCase()}</TableCell>
                   <TableCell>{user.chessNumber}</TableCell>
                   <TableCell>{user.team || "-"}</TableCell>
                   <TableCell>{user.points}</TableCell>

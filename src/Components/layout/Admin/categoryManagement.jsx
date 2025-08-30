@@ -180,8 +180,8 @@ import PropTypes from "prop-types"
             <TableBody>
               {categories.map((category) => (
                 <TableRow key={category._id}>
-                  <TableCell className="font-medium">{category.category}</TableCell>
-                  <TableCell>{category.description}</TableCell>
+                  <TableCell className="font-medium">{category.category.toUpperCase()}</TableCell>
+                  <TableCell>{category.description.toLowerCase()}</TableCell>
                   <TableCell>{new Date(category.createdAt).toLocaleDateString()}</TableCell>
                 </TableRow>
               ))}

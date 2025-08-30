@@ -256,8 +256,8 @@ const Programmanagement = ({ token }) => {
                 visiblePrograms.map((program, index) => (
                   <TableRow key={program._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell className="font-medium">{program.programName}</TableCell>
-                    <TableCell>{program.description}</TableCell>
+                    <TableCell className="font-medium">{program.programName.toUpperCase()}</TableCell>
+                    <TableCell>{program.description.toLowerCase()}</TableCell>
                     <TableCell>{program.category?.category || "N/A"}</TableCell>
                     <TableCell>{new Date(program.createdAt).toLocaleDateString()}</TableCell>
                   </TableRow>
