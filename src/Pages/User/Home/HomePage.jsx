@@ -96,7 +96,7 @@ export default function Home() {
       <section className="py-20 bg-[oklch(43.7%_0.078_188.216)] text-white">
   <div className="max-w-6xl mx-auto px-4">
     <h2 className="text-4xl font-bold text-center mb-12">
-      🏆 Overall Champions
+      🏆  Notable Stars
     </h2>
 
     {/* Horizontal scroll on small screens, grid on medium/large */}
@@ -160,7 +160,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl md:text-5xl font-bold mb-4 flex items-center justify-center gap-3">
-              👑 Latest Winning Teams
+              👑 Top Teams
             </h2>
             <p className="text-xl opacity-90">Congratulations to our most recent team champions!</p>
           </div>
