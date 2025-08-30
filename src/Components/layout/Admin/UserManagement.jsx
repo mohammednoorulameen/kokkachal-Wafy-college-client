@@ -35,7 +35,7 @@ import * as Yup from "yup";
 import { toast, Toaster } from "react-hot-toast";
 import PropTypes from "prop-types";
 
-const TEAMS = ["GROUP-A", "GROUP-B", "GROUP-C"];
+const TEAMS = ["RADIANCE", "BRILLIANCE", "RESILIENCE"];
 
 const UserManagement = ({ token }) => {
   const [users, setUsers] = useState([]);
