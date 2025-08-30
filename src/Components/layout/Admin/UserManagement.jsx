@@ -45,15 +45,13 @@ const UserManagement = ({ token }) => {
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [isPointsDialogOpen, setIsPointsDialogOpen] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
-
   const [categories, setCategories] = useState([]);
-  const [programs, setPrograms] = useState([]); // all programs (each has category)
-  const [selectedCategory, setSelectedCategory] = useState(""); // UI only
-  const [filteredPrograms, setFilteredPrograms] = useState([]); // programs belonging to selected category
-
+  const [programs, setPrograms] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  // New state for program search term
+  const [programSearchTerm, setProgramSearchTerm] = useState("");
 
-  // Fetch everything on mount
+  // Fetch all necessary data on component mount
   useEffect(() => {
     (async () => {
       await Promise.all([fetchUsers(), fetchCategories(), fetchPrograms()]);
@@ -61,21 +59,6 @@ const UserManagement = ({ token }) => {
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // Filter the program list when category or programs change
-  useEffect(() => {
-    if (!selectedCategory) {
-      setFilteredPrograms([]);
-      return;
-    }
-    // normalize category id on each program (program.category can be string/Object)
-    const list = programs.filter((p) => {
-      const catId =
-        typeof p.category === "object" ? p.category?._id : p.category;
-      return catId === selectedCategory;
-    });
-    setFilteredPrograms(list);
-  }, [selectedCategory, programs]);
 
   // --- API calls ---
   const fetchUsers = async () => {
@@ -114,15 +97,19 @@ const UserManagement = ({ token }) => {
     }
   };
 
-  // --- Validation ---
-  const AddUserSchema = Yup.object().shape({
+  // --- Validation Schemas ---
+  const UserSchema = Yup.object().shape({
     name: Yup.string().required("Name is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
-    points: Yup.number().min(0, "Points cannot be negative"),
     chessNumber: Yup.string().required("Chess Number is required"),
-    category: Yup.string().required("Category is required"),
+    points: Yup.number()
+      .min(0, "Points cannot be negative")
+      .required("Points is required"),
+    team: Yup.string()
+      .oneOf(TEAMS, "Invalid team")
+      .required("Team is required"),
+    categories: Yup.array().min(1, "Select at least one category"),
     programs: Yup.array().min(1, "Pick at least one program"),
-    team: Yup.string().oneOf(TEAMS).required("Team is required"),
   });
 
   const AddPointsSchema = Yup.object().shape({
@@ -134,26 +121,22 @@ const UserManagement = ({ token }) => {
   // --- Handlers ---
   const handleAddUser = async (values, { resetForm }) => {
     try {
-      // API expects `programs` array + `category` id + team etc.
       const { data } = await adminInstance.post("/adduser", values, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
       if (data.success) {
-        // Option 1: refetch users to be 100% consistent
         await fetchUsers();
-        
         resetForm();
-        setSelectedCategory("");
         setIsAddDialogOpen(false);
         toast.success("User added successfully!");
       } else {
         toast.error(data.message || "Failed to add user");
       }
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      console.error("Add user error:", error.response?.data || error.message);
       toast.error(
-        "Failed to add user. Email or Name or chess number might be duplicate."
+        error.response?.data?.message ||
+          "Failed to add user. Check required fields or duplicates."
       );
     }
   };
@@ -166,7 +149,6 @@ const UserManagement = ({ token }) => {
         values,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       if (data.success) {
         setUsers((prev) =>
           prev.map((u) => (u._id === selectedUser._id ? data.data : u))
@@ -207,6 +189,7 @@ const UserManagement = ({ token }) => {
 
   const openEditDialog = (user) => {
     setSelectedUser(user);
+    setProgramSearchTerm(""); // Reset program search term on opening dialog
     setIsEditDialogOpen(true);
   };
 
@@ -265,99 +248,158 @@ const UserManagement = ({ token }) => {
                 email: "",
                 chessNumber: "",
                 points: 0,
-                category: "",
-                programs: [], // <-- multiple
                 team: "",
+                categories: [],
+                programs: [],
               }}
-              validationSchema={AddUserSchema}
+              validationSchema={UserSchema}
               onSubmit={handleAddUser}
             >
-              {({ errors, touched, setFieldValue, values }) => (
-                <Form className="space-y-4">
-                  {/* Name */}
-                  <div>
-                    <Label htmlFor="name">Name</Label>
-                    <Field id="name" name="name" as={Input} />
-                    {errors.name && touched.name && (
-                      <div className="text-red-500">{errors.name}</div>
-                    )}
-                  </div>
+              {/* {({ errors, touched, setFieldValue, values }) => {
+                const availablePrograms = programs.filter((p) => {
+                  const catId = typeof p.category === "object" ? p.category?._id : p.category;
+                  return values.categories.includes(catId) && p.programName.toLowerCase().includes(programSearchTerm.toLowerCase());
+                }); */}
 
-                  {/* Chess Number */}
-                  <div>
-                    <Label htmlFor="chessNumber">Chess Number</Label>
-                    <Field id="chessNumber" name="chessNumber" as={Input} />
-                    {errors.chessNumber && touched.chessNumber && (
-                      <div className="text-red-500">{errors.chessNumber}</div>
-                    )}
-                  </div>
+              {({ values, errors, touched, setFieldValue }) => {
+                const availablePrograms = programs
+                  .filter((p) => {
+                    const catId =
+                      typeof p.category === "object"
+                        ? p.category?._id
+                        : p.category;
 
-                  {/* Email */}
-                  <div>
-                    <Label htmlFor="email">Email</Label>
-                    <Field id="email" name="email" type="email" as={Input} />
-                    {errors.email && touched.email && (
-                      <div className="text-red-500">{errors.email}</div>
-                    )}
-                  </div>
+                    return (
+                      values.categories.includes(catId) &&
+                      p.programName
+                        .toLowerCase()
+                        .includes(programSearchTerm.toLowerCase())
+                    );
+                  })
 
-                  {/* Points */}
-                  <div>
-                    <Label htmlFor="points">Initial Points</Label>
-                    <Field id="points" name="points" type="number" as={Input} />
-                    {errors.points && touched.points && (
-                      <div className="text-red-500">{errors.points}</div>
-                    )}
-                  </div>
+                  .sort((a, b) => {
+                    const aChecked = values.programs.includes(a._id);
+                    const bChecked = values.programs.includes(b._id);
 
-                  {/* Category */}
-                  <div>
-                    <Label htmlFor="category">Category</Label>
-                    <Field
-                      as="select"
-                      name="category"
-                      className="w-full border px-3 py-2 rounded"
-                      value={values.category}
-                      onChange={(e) => {
-                        const val = e.target.value;
-                        setFieldValue("category", val);
-                        setFieldValue("programs", []); // reset programs
-                        setSelectedCategory(val); // triggers filtering outside
-                      }}
-                    >
-                      <option value="">Select a category</option>
-                      {categories.map((c) => (
-                        <option key={c._id} value={c._id}>
-                          {c.category}
-                        </option>
-                      ))}
-                    </Field>
-                    {errors.category && touched.category && (
-                      <div className="text-red-500">{errors.category}</div>
-                    )}
-                  </div>
+                    return aChecked === bChecked ? 0 : aChecked ? -1 : 1;
+                  });
 
-                  <div>
-                    <Label htmlFor="programs">Programs</Label>
-                    <Input
-                      type="text"
-                      placeholder="Search programs..."
-                      value={values.programSearch || ""}
-                      onChange={(e) =>
-                        setFieldValue("programSearch", e.target.value)
-                      }
-                      className="mb-2"
-                    />
-                    <div className="max-h-32 overflow-y-auto border rounded p-2">
-                      {filteredPrograms
-                        .filter((p) =>
-                          p.programName
-                            .toLowerCase()
-                            .includes(
-                              (values.programSearch || "").toLowerCase()
-                            )
-                        )
-                        .map((p) => (
+                return (
+                  <Form className="space-y-4">
+                    {/* ... other form fields (name, chessNumber, email, points, team) */}
+                    <div>
+                      <Label htmlFor="name">Name</Label>
+                      <Field id="name" name="name" as={Input} />
+                      {errors.name && touched.name && (
+                        <div className="text-red-500">{errors.name}</div>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="chessNumber">Chess Number</Label>
+                      <Field id="chessNumber" name="chessNumber" as={Input} />
+                      {errors.chessNumber && touched.chessNumber && (
+                        <div className="text-red-500">{errors.chessNumber}</div>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email</Label>
+                      <Field id="email" name="email" type="email" as={Input} />
+                      {errors.email && touched.email && (
+                        <div className="text-red-500">{errors.email}</div>
+                      )}
+                    </div>
+                    <div>
+                      <Label htmlFor="points">Initial Points</Label>
+                      <Field
+                        id="points"
+                        name="points"
+                        type="number"
+                        as={Input}
+                      />
+                      {errors.points && touched.points && (
+                        <div className="text-red-500">{errors.points}</div>
+                      )}
+                    </div>
+                    <div>
+                      <Label>Team</Label>
+                      <Field
+                        as="select"
+                        name="team"
+                        className="w-full border px-3 py-2 rounded"
+                      >
+                        <option value="">Select a team</option>
+                        {TEAMS.map((t) => (
+                          <option key={t} value={t}>
+                            {t}
+                          </option>
+                        ))}
+                      </Field>
+                      {errors.team && touched.team && (
+                        <div className="text-red-500">{errors.team}</div>
+                      )}
+                    </div>
+
+                    {/* Multiple Categories */}
+                    <div>
+                      <Label>Categories</Label>
+                      <div className="max-h-32 overflow-y-auto border rounded p-2">
+                        {categories.map((c) => (
+                          <div key={c._id} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={values.categories.includes(c._id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFieldValue("categories", [
+                                    ...values.categories,
+                                    c._id,
+                                  ]);
+                                } else {
+                                  setFieldValue(
+                                    "categories",
+                                    values.categories.filter(
+                                      (id) => id !== c._id
+                                    )
+                                  );
+                                  setFieldValue(
+                                    "programs",
+                                    values.programs.filter((pid) => {
+                                      const prog = programs.find(
+                                        (p) => p._id === pid
+                                      );
+                                      const catId =
+                                        typeof prog?.category === "object"
+                                          ? prog?.category?._id
+                                          : prog?.category;
+                                      return catId !== c._id;
+                                    })
+                                  );
+                                }
+                              }}
+                            />
+                            <span>{c.category}</span>
+                          </div>
+                        ))}
+                      </div>
+                      {errors.categories && touched.categories && (
+                        <div className="text-red-500">{errors.categories}</div>
+                      )}
+                    </div>
+
+                    {/* Programs from all selected categories */}
+                    <div>
+                      <Label>Programs</Label>
+                      {values.categories.length > 0 && (
+                        <Input
+                          type="text"
+                          placeholder="Search programs..."
+                          value={programSearchTerm}
+                          onChange={(e) => setProgramSearchTerm(e.target.value)}
+                          className="mb-2"
+                        />
+                      )}
+                      <div className="max-h-40 overflow-y-auto border rounded p-2">
+                        {availablePrograms.map((p) => (
                           <div key={p._id} className="flex items-center gap-2">
                             <input
                               type="checkbox"
@@ -376,50 +418,43 @@ const UserManagement = ({ token }) => {
                                 }
                               }}
                             />
-                            <span>{p.programName}</span>
+                            <span>
+                              {p.programName} (
+                              {
+                                categories.find(
+                                  (c) =>
+                                    c._id ===
+                                    (typeof p.category === "object"
+                                      ? p.category?._id
+                                      : p.category)
+                                )?.category
+                              }
+                              )
+                            </span>
                           </div>
                         ))}
-                      {filteredPrograms.length === 0 && (
-                        <div className="text-gray-500 text-sm mt-1">
-                          {values.category
-                            ? "No programs in this category"
-                            : "Select a category first"}
-                        </div>
+                        {availablePrograms.length === 0 && (
+                          <div className="text-gray-500 text-sm mt-1">
+                            {values.categories.length === 0
+                              ? "Select categories to see programs"
+                              : "No programs found for this search/category."}
+                          </div>
+                        )}
+                      </div>
+                      {errors.programs && touched.programs && (
+                        <div className="text-red-500">{errors.programs}</div>
                       )}
                     </div>
-                    {errors.programs && touched.programs && (
-                      <div className="text-red-500">{errors.programs}</div>
-                    )}
-                  </div>
 
-                  {/* Team */}
-                  <div>
-                    <Label htmlFor="team">Team</Label>
-                    <Field
-                      as="select"
-                      name="team"
-                      className="w-full border px-3 py-2 rounded"
+                    <Button
+                      type="submit"
+                      className="w-full bg-blue-50 hover:bg-black hover:text-white"
                     >
-                      <option value="">Select a team</option>
-                      {TEAMS.map((t) => (
-                        <option key={t} value={t}>
-                          {t}
-                        </option>
-                      ))}
-                    </Field>
-                    {errors.team && touched.team && (
-                      <div className="text-red-500">{errors.team}</div>
-                    )}
-                  </div>
-
-                  <Button
-                    type="submit"
-                    className="w-full bg-blue-50  hover:bg-black hover:text-white"
-                  >
-                    Add User
-                  </Button>
-                </Form>
-              )}
+                      Add User
+                    </Button>
+                  </Form>
+                );
+              }}
             </Formik>
           </DialogContent>
         </Dialog>
@@ -448,7 +483,6 @@ const UserManagement = ({ token }) => {
               <TableRow>
                 <TableHead>SNO</TableHead>
                 <TableHead>Name</TableHead>
-                {/* <TableHead>Email</TableHead> */}
                 <TableHead>Chess Number</TableHead>
                 <TableHead>Team</TableHead>
                 <TableHead>Points</TableHead>
@@ -461,7 +495,6 @@ const UserManagement = ({ token }) => {
                 <TableRow key={user._id}>
                   <TableCell>{index + 1}</TableCell>
                   <TableCell>{user.name}</TableCell>
-                  {/* <TableCell>{user.email}</TableCell> */}
                   <TableCell>{user.chessNumber}</TableCell>
                   <TableCell>{user.team || "-"}</TableCell>
                   <TableCell>{user.points}</TableCell>
@@ -492,12 +525,11 @@ const UserManagement = ({ token }) => {
       </Card>
 
       {/* Edit User Dialog */}
-
       <Dialog
         open={isEditDialogOpen}
         onOpenChange={(open) => {
           setIsEditDialogOpen(open);
-          if (!open) setSelectedUser(null); 
+          if (!open) setSelectedUser(null);
         }}
       >
         <DialogContent className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
@@ -508,48 +540,57 @@ const UserManagement = ({ token }) => {
 
           {selectedUser && (
             <Formik
+              key={selectedUser._id}
               initialValues={{
                 name: selectedUser.name || "",
                 email: selectedUser.email || "",
                 chessNumber: selectedUser.chessNumber || "",
                 points: selectedUser.points || 0,
                 team: selectedUser.team || "",
-                category:
-                  selectedUser.category?._id || selectedUser.category || "",
+                categories:
+                  selectedUser.categories?.map((c) =>
+                    typeof c === "object" ? c._id : c
+                  ) || [],
                 programs:
                   selectedUser.programs?.map((p) =>
                     typeof p === "object" ? p._id : p
                   ) || [],
               }}
-              validationSchema={Yup.object().shape({
-                name: Yup.string().required("Name is required"),
-                email: Yup.string()
-                  .email("Invalid email")
-                  .required("Email is required"),
-                chessNumber: Yup.string().required("Chess Number is required"),
-                points: Yup.number().min(0, "Points cannot be negative"),
-                team: Yup.string()
-                  .oneOf(TEAMS, "Invalid team")
-                  .required("Team is required"),
-                category: Yup.string().required("Category is required"),
-                programs: Yup.array().min(1, "Pick at least one program"),
-              })}
+              validationSchema={UserSchema}
               onSubmit={handleUpdateUser}
-              enableReinitialize
             >
+              {/* {({ values, errors, touched, setFieldValue }) => {
+                const availablePrograms = programs.filter((p) => {
+                  const catId = typeof p.category === "object" ? p.category?._id : p.category;
+                  return values.categories.includes(catId) && p.programName.toLowerCase().includes(programSearchTerm.toLowerCase());
+                }); */}
+
               {({ values, errors, touched, setFieldValue }) => {
-                // Filter programs based on selected category
-                const filteredPrograms = programs.filter((p) => {
-                  const catId =
-                    typeof p.category === "object"
-                      ? p.category?._id
-                      : p.category;
-                  return catId === values.category;
-                });
+                const availablePrograms = programs
+                  .filter((p) => {
+                    const catId =
+                      typeof p.category === "object"
+                        ? p.category?._id
+                        : p.category;
+
+                    return (
+                      values.categories.includes(catId) &&
+                      p.programName
+                        .toLowerCase()
+                        .includes(programSearchTerm.toLowerCase())
+                    );
+                  })
+
+                  .sort((a, b) => {
+                    const aChecked = values.programs.includes(a._id);
+                    const bChecked = values.programs.includes(b._id);
+
+                    return aChecked === bChecked ? 0 : aChecked ? -1 : 1;
+                  });
 
                 return (
                   <Form className="space-y-4">
-                    {/* Name */}
+                    {/* ... other form fields (name, email, chessNumber, points, team) */}
                     <div>
                       <Label>Name</Label>
                       <Field name="name" as={Input} />
@@ -557,8 +598,6 @@ const UserManagement = ({ token }) => {
                         <div className="text-red-500">{errors.name}</div>
                       )}
                     </div>
-
-                    {/* Email */}
                     <div>
                       <Label>Email</Label>
                       <Field name="email" type="email" as={Input} />
@@ -566,8 +605,6 @@ const UserManagement = ({ token }) => {
                         <div className="text-red-500">{errors.email}</div>
                       )}
                     </div>
-
-                    {/* Chess Number */}
                     <div>
                       <Label>Chess Number</Label>
                       <Field name="chessNumber" as={Input} />
@@ -575,8 +612,6 @@ const UserManagement = ({ token }) => {
                         <div className="text-red-500">{errors.chessNumber}</div>
                       )}
                     </div>
-
-                    {/* Points */}
                     <div>
                       <Label>Points</Label>
                       <Field name="points" type="number" as={Input} />
@@ -584,8 +619,6 @@ const UserManagement = ({ token }) => {
                         <div className="text-red-500">{errors.points}</div>
                       )}
                     </div>
-
-                    {/* Team */}
                     <div>
                       <Label>Team</Label>
                       <Field
@@ -605,85 +638,105 @@ const UserManagement = ({ token }) => {
                       )}
                     </div>
 
-                    {/* Category */}
+                    {/* Multiple Categories */}
                     <div>
-                      <Label>Category</Label>
-                      <Field
-                        as="select"
-                        name="category"
-                        className="w-full border px-3 py-2 rounded"
-                        value={values.category}
-                        onChange={(e) => {
-                          const val = e.target.value;
-                          setFieldValue("category", val);
-                          setFieldValue("programs", []); // reset programs when category changes
-                        }}
-                      >
-                        <option value="">Select a category</option>
+                      <Label>Categories</Label>
+                      <div className="max-h-32 overflow-y-auto border rounded p-2">
                         {categories.map((c) => (
-                          <option key={c._id} value={c._id}>
-                            {c.category}
-                          </option>
+                          <div key={c._id} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={values.categories.includes(c._id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFieldValue("categories", [
+                                    ...values.categories,
+                                    c._id,
+                                  ]);
+                                } else {
+                                  setFieldValue(
+                                    "categories",
+                                    values.categories.filter(
+                                      (id) => id !== c._id
+                                    )
+                                  );
+                                  setFieldValue(
+                                    "programs",
+                                    values.programs.filter((pid) => {
+                                      const prog = programs.find(
+                                        (p) => p._id === pid
+                                      );
+                                      const catId =
+                                        typeof prog?.category === "object"
+                                          ? prog?.category?._id
+                                          : prog?.category;
+                                      return catId !== c._id;
+                                    })
+                                  );
+                                }
+                              }}
+                            />
+                            <span>{c.category}</span>
+                          </div>
                         ))}
-                      </Field>
-                      {errors.category && touched.category && (
-                        <div className="text-red-500">{errors.category}</div>
+                      </div>
+                      {errors.categories && touched.categories && (
+                        <div className="text-red-500">{errors.categories}</div>
                       )}
                     </div>
 
-                    {/* Programs */}
+                    {/* Programs from selected categories */}
                     <div>
                       <Label>Programs</Label>
-                      <Input
-                        type="text"
-                        placeholder="Search programs..."
-                        value={values.programSearch || ""}
-                        onChange={(e) =>
-                          setFieldValue("programSearch", e.target.value)
-                        }
-                        className="mb-2"
-                      />
-                      <div className="max-h-32 overflow-y-auto border rounded p-2">
-                        {filteredPrograms
-                          .filter((p) =>
-                            p.programName
-                              .toLowerCase()
-                              .includes(
-                                (values.programSearch || "").toLowerCase()
+                      {values.categories.length > 0 && (
+                        <Input
+                          type="text"
+                          placeholder="Search programs..."
+                          value={programSearchTerm}
+                          onChange={(e) => setProgramSearchTerm(e.target.value)}
+                          className="mb-2"
+                        />
+                      )}
+                      <div className="max-h-40 overflow-y-auto border rounded p-2">
+                        {availablePrograms.map((p) => (
+                          <div key={p._id} className="flex items-center gap-2">
+                            <input
+                              type="checkbox"
+                              checked={values.programs.includes(p._id)}
+                              onChange={(e) => {
+                                if (e.target.checked) {
+                                  setFieldValue("programs", [
+                                    ...values.programs,
+                                    p._id,
+                                  ]);
+                                } else {
+                                  setFieldValue(
+                                    "programs",
+                                    values.programs.filter((id) => id !== p._id)
+                                  );
+                                }
+                              }}
+                            />
+                            <span>
+                              {p.programName} (
+                              {
+                                categories.find(
+                                  (c) =>
+                                    c._id ===
+                                    (typeof p.category === "object"
+                                      ? p.category?._id
+                                      : p.category)
+                                )?.category
+                              }
                               )
-                          )
-                          .map((p) => (
-                            <div
-                              key={p._id}
-                              className="flex items-center gap-2"
-                            >
-                              <input
-                                type="checkbox"
-                                checked={values.programs.includes(p._id)}
-                                onChange={(e) => {
-                                  if (e.target.checked) {
-                                    setFieldValue("programs", [
-                                      ...values.programs,
-                                      p._id,
-                                    ]);
-                                  } else {
-                                    setFieldValue(
-                                      "programs",
-                                      values.programs.filter(
-                                        (id) => id !== p._id
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                              <span>{p.programName}</span>
-                            </div>
-                          ))}
-                        {filteredPrograms.length === 0 && (
+                            </span>
+                          </div>
+                        ))}
+                        {availablePrograms.length === 0 && (
                           <div className="text-gray-500 text-sm mt-1">
-                            {values.category
-                              ? "No programs in this category"
-                              : "Select a category first"}
+                            {values.categories.length === 0
+                              ? "Select categories to see programs"
+                              : "No programs found for this search/category."}
                           </div>
                         )}
                       </div>
@@ -692,7 +745,6 @@ const UserManagement = ({ token }) => {
                       )}
                     </div>
 
-                    {/* Submit Button */}
                     <Button
                       type="submit"
                       className="w-full bg-blue-600 text-white"
