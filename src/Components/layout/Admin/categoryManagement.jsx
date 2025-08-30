@@ -172,10 +172,10 @@ import PropTypes from "prop-types"
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SNO</TableHead>
-                <TableHead>Category Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Created At</TableHead>
+                <TableHead className="font-extrabold ">SNO</TableHead>
+                <TableHead className="font-extrabold ">Category Name</TableHead>
+                <TableHead className="font-extrabold ">Description</TableHead>
+                <TableHead className="font-extrabold ">Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

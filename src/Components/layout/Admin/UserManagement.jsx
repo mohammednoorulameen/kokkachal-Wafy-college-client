@@ -481,13 +481,13 @@ const UserManagement = ({ token }) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SNO</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Chess Number</TableHead>
-                <TableHead>Team</TableHead>
-                <TableHead>Points</TableHead>
-                <TableHead>Programs</TableHead>
-                <TableHead>Actions</TableHead>
+                <TableHead className="font-extrabold ">SNO</TableHead>
+                <TableHead className="font-extrabold ">Name</TableHead>
+                <TableHead className="font-extrabold ">Chess Number</TableHead>
+                <TableHead className="font-extrabold ">Team</TableHead>
+                <TableHead className="font-extrabold ">Points</TableHead>
+                <TableHead className="font-extrabold ">Programs</TableHead>
+                <TableHead className="font-extrabold ">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

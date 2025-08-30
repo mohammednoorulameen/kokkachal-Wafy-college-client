@@ -275,11 +275,13 @@ const Programmanagement = ({ token }) => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>SNo</TableHead>
-                <TableHead>Program Name</TableHead>
-                <TableHead>Description</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>Created At</TableHead>
+                <TableHead className="font-extrabold">SNo</TableHead>
+                <TableHead className="font-extrabold">
+                  Program Name
+                </TableHead>
+                <TableHead className="font-extrabold ">Description</TableHead>
+                <TableHead className="font-extrabold ">Category</TableHead>
+                <TableHead className="font-extrabold">Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
