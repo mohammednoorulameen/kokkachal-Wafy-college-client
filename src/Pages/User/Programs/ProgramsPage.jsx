@@ -5,18 +5,9 @@ import userInstance from "@/axios/UserInstance";
 
 export default function ProgramsPage() {
   const [allPrograms, setAllPrograms] = useState([]);
-  const [displayCount, setDisplayCount] = useState(10);
+  const [displayCount, setDisplayCount] = useState(12);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
-
-  // Map of category IDs or levels to names
-  // const categoryMap = {
-  //   junior: "Junior",
-  //   senior: "Senior",
-  //   // Music: "Music",
-  //   // Dance: "Dance",
-  //   // Theatre: "Theatre",
-  // };
 
   // Fetch all programs
   useEffect(() => {
@@ -47,7 +38,7 @@ export default function ProgramsPage() {
             program.category?.category?.toLowerCase() || program.category?.toLowerCase() || "";
           return (
             programCategory === selectedCategory.toLowerCase() ||
-            program.level?.toLowerCase() === selectedCategory.toLowerCase() // if you have "level" field
+            program.level?.toLowerCase() === selectedCategory.toLowerCase()
           );
         });
 
@@ -55,11 +46,13 @@ export default function ProgramsPage() {
   const displayedPrograms = filteredPrograms.slice(0, displayCount);
 
   return (
-    <div className="min-h-screen bg-background">
-      <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background text-center">
+    <div className="min-h-screen bg-[oklch(43.7%_0.078_188.216)] text-white">
+      
+      {/* Header */}
+      <section className="pt-24 pb-16 text-center">
         <h1 className="text-5xl font-bold mb-6">Festival Programs</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8">
-          Discover diverse artistic programs and competitions that make UMMATHEE a celebration of creativity
+        <p className="text-xl max-w-3xl mx-auto mb-8 text-white/80">
+          Discover diverse artistic programs and competitions that make KAF a celebration of creativity
         </p>
 
         {/* Search */}
@@ -68,33 +61,31 @@ export default function ProgramsPage() {
           placeholder="Search programs..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="border rounded-lg px-4 py-2 shadow-sm mb-6"
+          className="border rounded-lg px-4 py-2 shadow-sm mb-6 bg-white/10 text-white placeholder-white/70"
         />
 
         {/* Categories */}
-      
         <div className="flex flex-wrap justify-center gap-4 mb-12">
-  {["all", "Junior", "Senior","Thamheediyya"].map((cat) => {
-    const isSelected = selectedCategory.toLowerCase() === cat.toLowerCase();
-    return (
-      <button
-        key={cat}
-        onClick={() => {
-          setSelectedCategory(cat);
-          setDisplayCount(10); // reset display count on filter
-        }}
-        className={`px-4 py-2 rounded-full border transition ${
-          isSelected
-            ? "bg-primary text-black border-black"
-            : "bg-gray-200 text-gray-700 border-gray-300 hover:bg-primary/20"
-        }`}
-      >
-        {cat}
-      </button>
-    );
-  })}
-</div>
-
+          {["all", "Junior", "Senior", "Thamheediyya"].map((cat) => {
+            const isSelected = selectedCategory.toLowerCase() === cat.toLowerCase();
+            return (
+              <button
+                key={cat}
+                onClick={() => {
+                  setSelectedCategory(cat);
+                  setDisplayCount(10); // reset display count on filter
+                }}
+                className={`px-4 py-2 rounded-full border transition ${
+                  isSelected
+                    ? "bg-white text-black border-white"
+                    : "bg-white/20 text-white border-white/30 hover:bg-white/30"
+                }`}
+              >
+                {cat}
+              </button>
+            );
+          })}
+        </div>
       </section>
 
       {/* Programs */}
@@ -102,14 +93,14 @@ export default function ProgramsPage() {
         {displayedPrograms.map((program) => (
           <div
             key={program._id}
-            className="bg-white rounded-xl p-6 shadow hover:shadow-lg transition"
+            className="bg-white/10 rounded-xl p-6 shadow hover:shadow-lg transition"
           >
             <h3 className="text-xl font-bold mb-2">{program.programName}</h3>
-            <p className="text-muted-foreground mb-2">{program.description}</p>
-            <p className="text-sm text-gray-500 mb-2">
+            <p className="text-white/80 mb-2">{program.description}</p>
+            <p className="text-sm text-white/60 mb-2">
               Created At: {new Date(program.createdAt).toLocaleDateString()}
             </p>
-            <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-medium">
+            <span className="bg-white/20 text-white px-3 py-1 rounded-full text-sm font-medium">
               {program.category?.category || program.level || program.category || "Uncategorized"}
             </span>
           </div>
@@ -118,10 +109,10 @@ export default function ProgramsPage() {
 
       {/* Load More Button */}
       {displayCount < filteredPrograms.length && (
-        <div className="text-center mb-20">
+        <div className="text-center pb-10">
           <button
             onClick={() => setDisplayCount((prev) => prev + 10)}
-            className="bg-primary text-black border px-8 py-3 rounded-full font-semibold hover:bg-primary/90 transition"
+            className="bg-white text-black border px-8 py-3 rounded-full font-semibold hover:bg-white/90 transition"
           >
             View More
           </button>
@@ -130,4 +121,3 @@ export default function ProgramsPage() {
     </div>
   );
 }
-

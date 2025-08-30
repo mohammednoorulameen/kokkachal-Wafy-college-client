@@ -23,20 +23,20 @@ export default function GalleryPage() {
     activeFilter === "all" ? galleryItems : galleryItems.filter((item) => item.category === activeFilter)
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-[oklch(43.7%_0.078_188.216)] text-white">
 
-      <section className="pt-24 pb-16 bg-gradient-to-br from-muted to-background">
+      {/* Header */}
+      <section className="pt-24 pb-16 text-center">
         <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h1 className="text-5xl font-bold mb-6 festival-text-gradient animate-slide-in-right">Festival Gallery</h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto animate-slide-in-right delay-150">
-              Relive the magical moments and artistic brilliance captured during UMMATHEE Arts Festival
-            </p>
-          </div>
+          <h1 className="text-5xl font-bold mb-6 animate-slide-in-right">Festival Gallery</h1>
+          <p className="text-xl text-white/80 max-w-3xl mx-auto animate-slide-in-right delay-150">
+            Relive the magical moments and artistic brilliance captured during KAF Arts Festival
+          </p>
         </div>
       </section>
 
-      <section className="py-8 bg-background">
+      {/* Filter Buttons */}
+      <section className="py-8">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {categories.map((category, index) => (
@@ -45,8 +45,8 @@ export default function GalleryPage() {
                 onClick={() => setActiveFilter(category)}
                 className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 animate-slide-in-right ${
                   activeFilter === category
-                    ? "bg-primary text-primary-foreground shadow-lg scale-105"
-                    : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
+                    ? "bg-white text-black shadow-lg scale-105"
+                    : "bg-white/20 text-white hover:bg-white/30"
                 }`}
                 style={{ animationDelay: `${index * 100}ms` }}
               >
@@ -57,12 +57,13 @@ export default function GalleryPage() {
         </div>
       </section>
 
+      {/* Gallery */}
       <section className="pb-20">
         <div className="max-w-6xl mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {filteredItems.map((item, index) => (
               <div key={item.id} className="group animate-rotate-in" style={{ animationDelay: `${index * 100}ms` }}>
-                <div className="bg-card rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105">
+                <div className="bg-white/10 rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105">
                   <div className="relative overflow-hidden">
                     <img
                       src={item.image || "/placeholder.svg"}
@@ -78,8 +79,8 @@ export default function GalleryPage() {
                   </div>
 
                   <div className="p-6">
-                    <h3 className="text-lg font-semibold text-card-foreground mb-2">{item.title}</h3>
-                    <p className="text-primary text-sm font-medium capitalize">{item.category.replace("-", " ")}</p>
+                    <h3 className="text-lg font-semibold text-white mb-2">{item.title}</h3>
+                    <p className="text-white/70 text-sm font-medium capitalize">{item.category.replace("-", " ")}</p>
                   </div>
                 </div>
               </div>
