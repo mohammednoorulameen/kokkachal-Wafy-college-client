@@ -321,6 +321,18 @@ const Programmanagement = ({ token }) => {
               )}
             </div>
           )}
+          {/* 📊 Program Count */}
+          <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
+            <p>
+              Total Programs:{" "}
+              <span className="font-semibold">{programs.length}</span>
+            </p>
+            <p>
+              Showing{" "}
+              <span className="font-semibold">{visiblePrograms.length}</span> of{" "}
+              <span className="font-semibold">{filteredPrograms.length}</span>
+            </p>
+          </div>
         </CardContent>
       </Card>
     </div>

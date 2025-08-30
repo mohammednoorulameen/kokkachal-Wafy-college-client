@@ -521,6 +521,18 @@ const UserManagement = ({ token }) => {
               </Button>
             </div>
           )}
+          {/* 📊 Program Count */}
+          <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
+            <p>
+              Total Programs:{" "}
+              <span className="font-semibold">{users.length}</span>
+            </p>
+            <p>
+              Showing{" "}
+              <span className="font-semibold">{filteredUsers.length}</span> of{" "}
+              <span className="font-semibold">{filteredUsers.length}</span>
+            </p>
+          </div>
         </CardContent>
       </Card>
 

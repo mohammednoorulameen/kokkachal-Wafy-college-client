@@ -172,14 +172,16 @@ import PropTypes from "prop-types"
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>SNO</TableHead>
                 <TableHead>Category Name</TableHead>
                 <TableHead>Description</TableHead>
                 <TableHead>Created At</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {categories.map((category) => (
+              {categories.map((category, index) => (
                 <TableRow key={category._id}>
+                  <TableCell className="font-medium">{index + 1}</TableCell>
                   <TableCell className="font-medium">{category.category.toUpperCase()}</TableCell>
                   <TableCell>{category.description.toLowerCase()}</TableCell>
                   <TableCell>{new Date(category.createdAt).toLocaleDateString()}</TableCell>
@@ -187,6 +189,9 @@ import PropTypes from "prop-types"
               ))}
             </TableBody>
           </Table>
+           <div className="flex justify-between items-center mt-6 text-sm text-gray-600">
+    <p>Total Categories: <span className="font-semibold">{categories.length}</span></p>
+  </div>
         </CardContent>
       </Card>
     </div>
