@@ -1,13 +1,32 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/Components/ui/card"
-import { Button } from "@/Components/ui/button"
-import { Input } from "@/Components/ui/input"
-import { Label } from "@/Components/ui/label"
-import { Textarea } from "@/Components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/Components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/Components/ui/table"
+import { useState, useEffect } from "react";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/Components/ui/card";
+import { Button } from "@/Components/ui/button";
+import { Input } from "@/Components/ui/input";
+import { Label } from "@/Components/ui/label";
+import { Textarea } from "@/Components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/Components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/Components/ui/table";
 import {
   Dialog,
   DialogContent,
@@ -15,108 +34,110 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/Components/ui/dialog"
-import { Alert, AlertDescription } from "@/Components/ui/alert"
-import { Plus, Loader2, Search } from "lucide-react"
-import toast, { Toaster } from "react-hot-toast"
-import adminInstance from "@/axios/AdminInstance"
-import { Formik, Form, Field, ErrorMessage } from "formik"
-import * as Yup from "yup"
-import PropTypes from "prop-types"
+} from "@/Components/ui/dialog";
+import { Alert, AlertDescription } from "@/Components/ui/alert";
+import { Plus, Loader2, Search } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
+import adminInstance from "@/axios/AdminInstance";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import PropTypes from "prop-types";
 
 const Programmanagement = ({ token }) => {
-  const [programs, setPrograms] = useState([])
-  const [categories, setCategories] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState("")
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [searchTerm, setSearchTerm] = useState("")
-  const [visibleCount, setVisibleCount] = useState(10) // 🔑 Show 10 at start
+  const [programs, setPrograms] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [visibleCount, setVisibleCount] = useState(10); // 🔑 Show 10 at start
 
   useEffect(() => {
-    fetchPrograms()
-    fetchCategories()
-  }, [])
+    fetchPrograms();
+    fetchCategories();
+  }, []);
 
   const fetchPrograms = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const { data } = await adminInstance.get("/admin-get-programs", {
         headers: { Authorization: `Bearer ${token}` },
-      })
+      });
 
       if (data.success) {
-        setPrograms(data.data)
+        setPrograms(data.data);
       } else {
-        setError(data.message)
-        toast.error(data.message)
+        setError(data.message);
+        toast.error(data.message);
       }
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      setError("Failed to fetch programs")
-      toast.error("Failed to fetch programs")
+      setError("Failed to fetch programs");
+      toast.error("Failed to fetch programs");
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
-  }
+  };
 
   const fetchCategories = async () => {
     try {
       const { data } = await adminInstance.get("/admin-get-categories", {
         headers: { Authorization: `Bearer ${token}` },
-      })
+      });
       if (data.success) {
-        setCategories(data.data)
+        setCategories(data.data);
       }
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      console.error("Failed to fetch categories")
+      console.error("Failed to fetch categories");
     }
-  }
+  };
 
   // Formik validation schema
   const ProgramSchema = Yup.object().shape({
     programName: Yup.string().required("Program name is required"),
     description: Yup.string().required("Description is required"),
     category: Yup.string().required("Category is required"),
-  })
+  });
 
   const handleAddProgram = async (values, { resetForm }) => {
     try {
       const { data } = await adminInstance.post("/addprogram", values, {
         headers: { Authorization: `Bearer ${token}` },
-      })
+      });
       if (data.success) {
-        toast.success("Program added successfully")
-        resetForm()
-        setIsAddDialogOpen(false)
-        fetchPrograms() // 🔄 Refetch programs after adding
+        toast.success("Program added successfully");
+        resetForm();
+        setIsAddDialogOpen(false);
+        fetchPrograms(); // 🔄 Refetch programs after adding
       } else {
-        toast.error(data.message)
+        toast.error(data.message);
       }
-    // eslint-disable-next-line no-unused-vars
+      // eslint-disable-next-line no-unused-vars
     } catch (err) {
-      toast.error("Failed to add program")
+      toast.error("Failed to add program");
     }
-  }
+  };
 
   // 🔍 Filtered programs based on search
   const filteredPrograms = programs.filter(
     (program) =>
       program.programName.toLowerCase().includes(searchTerm.toLowerCase()) ||
       program.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      program.category?.category?.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+      program.category?.category
+        ?.toLowerCase()
+        .includes(searchTerm.toLowerCase())
+  );
 
   // Show only limited number
-  const visiblePrograms = filteredPrograms.slice(0, visibleCount)
+  const visiblePrograms = filteredPrograms.slice(0, visibleCount);
 
   if (loading) {
     return (
       <div className="flex items-center justify-center py-8">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-    )
+    );
   }
 
   return (
@@ -183,15 +204,21 @@ const Programmanagement = ({ token }) => {
                     <Label htmlFor="category">Category</Label>
                     <Select
                       value={values.category}
-                      onValueChange={(value) => setFieldValue("category", value)}
+                      onValueChange={(value) =>
+                        setFieldValue("category", value)
+                      }
                       required
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select a category" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className="bg-blue-100">
                         {categories.map((category) => (
-                          <SelectItem key={category._id} value={category._id}>
+                          <SelectItem
+                            className="hover:bg-blue-200 focus:bg-blue-300 cursor-pointer"
+                            key={category._id}
+                            value={category._id}
+                          >
                             {category.category}
                           </SelectItem>
                         ))}
@@ -204,7 +231,11 @@ const Programmanagement = ({ token }) => {
                     />
                   </div>
 
-                  <Button type="submit" className="w-full bg-blue-50  hover:bg-black hover:text-white" disabled={isSubmitting} >
+                  <Button
+                    type="submit"
+                    className="w-full bg-blue-50  hover:bg-black hover:text-white"
+                    disabled={isSubmitting}
+                  >
                     {isSubmitting ? "Adding..." : "Add Program"}
                   </Button>
                 </Form>
@@ -222,8 +253,8 @@ const Programmanagement = ({ token }) => {
           placeholder="Search programs..."
           value={searchTerm}
           onChange={(e) => {
-            setSearchTerm(e.target.value)
-            setVisibleCount(10) // reset count on search
+            setSearchTerm(e.target.value);
+            setVisibleCount(10); // reset count on search
           }}
           className="max-w-sm"
         />
@@ -256,10 +287,14 @@ const Programmanagement = ({ token }) => {
                 visiblePrograms.map((program, index) => (
                   <TableRow key={program._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
-                    <TableCell className="font-medium">{program.programName.toUpperCase()}</TableCell>
+                    <TableCell className="font-medium">
+                      {program.programName.toUpperCase()}
+                    </TableCell>
                     <TableCell>{program.description.toLowerCase()}</TableCell>
                     <TableCell>{program.category?.category || "N/A"}</TableCell>
-                    <TableCell>{new Date(program.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(program.createdAt).toLocaleDateString()}
+                    </TableCell>
                   </TableRow>
                 ))
               ) : (
@@ -280,20 +315,20 @@ const Programmanagement = ({ token }) => {
                   View More
                 </Button>
               ) : (
-                <p className="text-gray-500 text-sm">No more programs to show</p>
+                <p className="text-gray-500 text-sm">
+                  No more programs to show
+                </p>
               )}
             </div>
           )}
         </CardContent>
       </Card>
     </div>
-  )
-}
+  );
+};
 
 Programmanagement.propTypes = {
   token: PropTypes.string.isRequired,
-}
+};
 
-export default Programmanagement
-
-
+export default Programmanagement;
