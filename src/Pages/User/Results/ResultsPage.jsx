@@ -117,7 +117,7 @@ console.log(overallChampions)
     <section className="py-20 bg-[oklch(43.7%_0.078_188.216)] text-white">
   <div className="max-w-6xl mx-auto px-4">
     <h2 className="text-4xl font-bold text-center mb-12">
-      🏆 Overall Champions
+      🏆  Notable Stars
     </h2>
 
     {/* Horizontal scroll on small screens, grid on medium/large */}

@@ -762,7 +762,7 @@ const UserManagement = ({ token }) => {
 
                     <Button
                       type="submit"
-                      className="w-full bg-blue-600 text-white"
+                      className="w-full bg-blue-600 text-white hover:bg-black hover:text-white"
                     >
                       Update User
                     </Button>

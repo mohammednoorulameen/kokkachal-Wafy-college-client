@@ -50,7 +50,7 @@ export default function AboutPage() {
                   className="text-center animate-rotate-in"
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
-                  <div className="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse-glow">
+                  <div className="bg-white/20 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 ">
                     <Icon className="w-10 h-10 text-white" />
                   </div>
                   <h3 className="text-2xl font-bold mb-4">{item.title}</h3>
@@ -72,22 +72,22 @@ export default function AboutPage() {
             <div className="animate-slide-in-right">
               <h3 className="text-3xl font-bold mb-6">Our Story</h3>
               <p className="mb-6 leading-relaxed text-white/80">
-                UMMATHEE Arts Festival began as a small cultural gathering and has grown into one 
+                KAF Arts Festival began as a small cultural gathering and has grown into one 
                 of the most anticipated events in our college calendar. Over the years, we’ve 
                 witnessed incredible talent, fostered lasting friendships, and created memories 
                 that last a lifetime.
               </p>
               <p className="mb-8 leading-relaxed text-white/80">
                 From traditional dance performances to contemporary art installations, from musical 
-                concerts to dramatic presentations, UMMATHEE celebrates every form of artistic 
+                concerts to dramatic presentations, KAF celebrates every form of artistic 
                 expression with equal enthusiasm and respect.
               </p>
 
               <div className="grid grid-cols-2 gap-6">
                 {[
-                  { icon: Users, number: "50+", label: "Alumni Participants" },
+                  { icon: Users, number: "15+", label: "All Teachers" },
                   { icon: Calendar, number: "10+", label: "Years Running" },
-                  { icon: Award, number: "200+", label: "Awards Given" },
+                  { icon: Award, number: "50+", label: "Awards Given" },
                   { icon: Heart, number: "∞", label: "Memories Created" },
                 ].map((stat, index) => {
                   const Icon = stat.icon

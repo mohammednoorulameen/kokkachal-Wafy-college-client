@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   ChevronUp,
   Facebook,
@@ -11,33 +11,33 @@ import {
   Calendar,
   Users,
   Trophy,
-} from "lucide-react"
+} from "lucide-react";
 
 // The main App component that renders the Footer.
 // All components and logic are contained within this single file.
 export default function App() {
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
 
   // Show scroll to top button when user scrolls down
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.pageYOffset > 300) {
-        setIsVisible(true)
+        setIsVisible(true);
       } else {
-        setIsVisible(false)
+        setIsVisible(false);
       }
-    }
+    };
 
-    window.addEventListener("scroll", toggleVisibility)
-    return () => window.removeEventListener("scroll", toggleVisibility)
-  }, [])
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth",
-    })
-  }
+    });
+  };
 
   const footerLinks = {
     festival: [
@@ -58,14 +58,14 @@ export default function App() {
       { name: "Volunteer", href: "/contact" },
       { name: "Sponsors", href: "/about" },
     ],
-  }
+  };
 
   const socialLinks = [
     { icon: Facebook, href: "#", label: "Facebook" },
     { icon: Twitter, href: "#", label: "Twitter" },
     { icon: Instagram, href: "#", label: "Instagram" },
     { icon: Youtube, href: "#", label: "YouTube" },
-  ]
+  ];
 
   return (
     <footer className="bg-[oklch(43.7%_0.078_188.216)] text-background relative overflow-hidden">
@@ -76,10 +76,15 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="space-y-4 transform hover:scale-105 transition-transform duration-300">
-              <h3 className="text-3xl font-bold text-white">KAF 14TH EDITION</h3>
-              <p className="text-2xl font-semibold text-white">Arts Festival 2023-24</p>
+              <h3 className="text-3xl font-bold text-white">
+                KAF 14TH EDITION
+              </h3>
+              <p className="text-2xl font-semibold text-white">
+                Arts Festival 2023-24
+              </p>
               <p className="text-white leading-relaxed">
-                Celebrating creativity, culture, and artistic excellence in our vibrant college community.
+                Celebrating creativity, culture, and artistic excellence in our
+                vibrant college community.
               </p>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2 text-white hover:text-white transition-colors">
@@ -92,8 +97,7 @@ export default function App() {
                 </div>
                 <div className="flex items-center space-x-2 text-white hover:text-white transition-colors">
                   <MapPin className="w-4 h-4" />
-                  <span>UMERALI SHIHAB THANGAL ISLAMIC ACADEMY KOKKACHAL
-</span>
+                  <span>UMERALI SHIHAB THANGAL ISLAMIC ACADEMY KOKKACHAL</span>
                 </div>
               </div>
             </div>
@@ -156,7 +160,7 @@ export default function App() {
                 { icon: Calendar, number: "130", label: "Events" },
                 { icon: Trophy, number: "50+", label: "Winners" },
               ].map((stat, index) => {
-                const Icon = stat.icon
+                const Icon = stat.icon;
                 return (
                   <div
                     key={index}
@@ -164,10 +168,12 @@ export default function App() {
                     style={{ animationDelay: `${index * 200}ms` }}
                   >
                     <Icon className="w-8 h-8 mx-auto mb-2 text-secondary" />
-                    <div className="text-xl font-bold text-white">{stat.number}</div>
+                    <div className="text-xl font-bold text-white">
+                      {stat.number}
+                    </div>
                     <div className="text-sm text-white">{stat.label}</div>
                   </div>
-                )
+                );
               })}
             </div>
 
@@ -175,21 +181,19 @@ export default function App() {
               {/* Social media links */}
               <div className="flex space-x-4">
                 {socialLinks.map((social, index) => {
-                  const Icon = social.icon
+                  const Icon = social.icon;
                   return (
                     <a
                       key={index}
                       href={social.href}
                       aria-label={social.label}
-                      className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:text-white hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:rotate-12 animate-pulse-glow"
+                      className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:text-white hover:bg-primary transition-all duration-300 transform hover:scale-110 hover:rotate-12 "
                     >
                       <Icon className="w-5 h-5" />
                     </a>
-                  )
+                  );
                 })}
               </div>
-
-             
             </div>
           </div>
         </div>
@@ -198,7 +202,9 @@ export default function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex flex-col sm:flex-row justify-between items-center text-white text-sm">
               <p>&copy; KAF 14TH EDITION Arts Festival. All rights reserved.</p>
-              <p className="mt-2 sm:mt-0">Made with 💚 for our creative community</p>
+              <p className="mt-2 sm:mt-0">
+                Made with 💚 for our creative community
+              </p>
             </div>
           </div>
         </div>
@@ -208,13 +214,12 @@ export default function App() {
       {isVisible && (
         <button
           onClick={scrollToTop}
-          className="fixed bottom-8 right-8 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary z-50 animate-pulse-glow"
+          className="fixed bottom-8 right-8 w-12 h-12 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary z-50 border-2 border-primary-foreground"
           aria-label="Scroll to top"
         >
           <ChevronUp className="w-6 h-6 mx-auto animate-bounce" />
         </button>
       )}
     </footer>
-  )
+  );
 }
-
