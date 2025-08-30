@@ -50,7 +50,7 @@ const Programmanagement = ({ token }) => {
   const [error, setError] = useState("");
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [visibleCount, setVisibleCount] = useState(10); // 🔑 Show 10 at start
+  const [visibleCount, setVisibleCount] = useState(10); 
 
   useEffect(() => {
     fetchPrograms();

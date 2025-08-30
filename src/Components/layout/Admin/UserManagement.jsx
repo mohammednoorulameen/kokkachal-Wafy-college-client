@@ -216,6 +216,9 @@ const UserManagement = ({ token }) => {
     ? filteredUsers
     : users.slice(0, visibleCount);
 
+
+    const visiblePrograms = filteredUsers.slice(0, visibleCount);
+    
   return (
     <div className="space-y-6">
       <Toaster position="top-right" />
@@ -529,7 +532,7 @@ const UserManagement = ({ token }) => {
             </p>
             <p>
               Showing{" "}
-              <span className="font-semibold">{filteredUsers.length}</span> of{" "}
+              <span className="font-semibold">{visiblePrograms.length}</span> of{" "}
               <span className="font-semibold">{filteredUsers.length}</span>
             </p>
           </div>

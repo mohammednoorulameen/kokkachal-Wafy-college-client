@@ -20,8 +20,8 @@ export default function Header() {
     { name: "About", href: "/about", icon: Info },
     { name: "Programs", href: "/programs", icon: Calendar },
     { name: "Gallery", href: "/gallery", icon: ImageIcon },
-    { name: "Results", href: "/results", icon: Trophy },
-    { name: "Zone Results", href: "/zoneresult", icon: Trophy },
+    { name: "Team Result", href: "/results", icon: Trophy },
+    { name: "ALL Results", href: "/zoneresult", icon: Trophy },
     { name: "Contact", href: "/contact", icon: Phone },
   ]
 

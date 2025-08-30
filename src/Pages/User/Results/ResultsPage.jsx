@@ -159,9 +159,9 @@ console.log(overallChampions)
 
                 {/* Winner Details */}
                 <h3 className="text-lg font-bold mb-2 truncate">{winner.name}</h3>
-                <p className="text-white/70 text-sm">{winner.points} Points</p>
-                <p className="text-white/70 text-sm">{winner.chessNumber} CN</p>
-                <p className="text-white/70 text-sm">{winner.team} Team</p>
+                <p className="text-white/70 text-sm"> Points {winner.points}</p>
+                <p className="text-white/70 text-sm">CN {winner.chessNumber} </p>
+                <p className="text-white/70 text-sm"> Team {winner.team} </p>
               </div>
             );
           })
@@ -177,25 +177,8 @@ console.log(overallChampions)
 
       {/* Zone Results */}
       <section className="py-10">
-        {/* <div className="max-w-6xl mx-auto px-4"> */}
         <div >
-          {/* <h2 className="text-4xl font-bold text-center mb-12">
-            Zone Results
-          </h2> */}
-
-          {/* <div className="overflow-x-auto lg:overflow-x-visible px-2 lg:px-0">
-            <div className="flex justify-center">
-              <div
-                className="min-w-[220px] flex-shrink-0 animate-slide-in-right"
-                style={{ animationDelay: `200ms` }}
-              >
-                <div className="bg-white/10 rounded-lg p-6 shadow-md hover:shadow-lg transition-all duration-300 text-center">
-                  <p className="font-bold text-lg">Themhidhiyya</p>
-                </div>
-              </div>
-            </div>
-          </div> */}
-
+         
           {/* View More Button */}
           <div className="mt-8 text-center">
             <Button
