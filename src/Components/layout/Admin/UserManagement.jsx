@@ -121,6 +121,7 @@ const UserManagement = ({ token }) => {
   // --- Handlers ---
   const handleAddUser = async (values, { resetForm }) => {
     try {
+      console.log('check ', values)
       const { data } = await adminInstance.post("/adduser", values, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -446,7 +447,7 @@ const UserManagement = ({ token }) => {
                                 if (e.target.checked) {
                                   setFieldValue("programs", [
                                     ...values.programs,
-                                    { programId: p._id, isActive: true },
+                                    { programId: p._id, isActive: false },
                                   ]);
                                 } else {
                                   setFieldValue(
@@ -605,7 +606,7 @@ const UserManagement = ({ token }) => {
                   selectedUser.programs?.map((p) =>
                     typeof p === "object"
                       ? { programId: p.programId?._id || p.programId, isActive: p.isActive }
-                      : { programId: p, isActive: true }
+                      : { programId: p, isActive: false }
                   ) || [],
               }}
               validationSchema={UserSchema}
