@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent } from "@/components/ui/card"
+// import { Card, CardContent } from "@/components/ui/card"
 import { Search, ChevronDown, ChevronUp } from "lucide-react"
 
 const  AllProgramResult = () => {
@@ -21,6 +21,7 @@ const  AllProgramResult = () => {
           topStudents: [
             { _id: 1, name: "Arjun", chessNumber: "C101", team: "Red Dragons", points: 15 },
             { _id: 2, name: "Rahul", chessNumber: "C102", team: "Blue Warriors", points: 12 },
+            { _id: 2, name: "Rahul", chessNumber: "C102", team: "Blue Warriors", points: 12 },
           ],
         },
         {
@@ -28,6 +29,15 @@ const  AllProgramResult = () => {
           programName: "Basketball",
           topStudents: [
             { _id: 3, name: "Neha", chessNumber: "C201", team: "Green Giants", points: 18 },
+          ],
+        },
+         {
+          programId: 1,
+          programName: "speech",
+          topStudents: [
+            { _id: 1, name: "Arjun", chessNumber: "C101", team: "Red Dragons", points: 15 },
+            { _id: 2, name: "Rahul", chessNumber: "C102", team: "Blue Warriors", points: 12 },
+            { _id: 2, name: "Rahul", chessNumber: "C102", team: "Blue Warriors", points: 12 },
           ],
         },
       ],
@@ -95,8 +105,8 @@ const  AllProgramResult = () => {
 
   return (
     <div className="space-y-6">
-      <Card>
-        <CardContent>
+      {/* <Card> */}
+        {/* <CardContent> */}
           <section className="bg-white text-black min-h-screen py-20">
             <div className="max-w-6xl mx-auto px-4">
 
@@ -196,8 +206,8 @@ const  AllProgramResult = () => {
               )}
             </div>
           </section>
-        </CardContent>
-      </Card>
+        {/* </CardContent> */}
+      {/* </Card> */}
     </div>
   )
 }

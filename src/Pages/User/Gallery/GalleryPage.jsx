@@ -5,18 +5,21 @@ import { useState } from "react"
 export default function GalleryPage() {
   const [activeFilter, setActiveFilter] = useState("all")
 
-  const categories = ["all", "music", "dance", "theatre", "visual-arts", "photography"]
+  const categories = ["all", "college", "speech", "visual-arts", "photography"]
 
   const galleryItems = [
-    { id: 1, category: "music", title: "Classical Concert", image: "/classical-music-concert-performance.png" },
-    { id: 2, category: "dance", title: "Traditional Dance", image: "/traditional-cultural-dance-performance.png" },
-    { id: 3, category: "theatre", title: "Drama Performance", image: "/theatrical-drama-stage-performance.png" },
-    { id: 4, category: "visual-arts", title: "Art Exhibition", image: "/art-gallery-exhibition-paintings.png" },
-    { id: 5, category: "photography", title: "Photo Contest", image: "/photography-contest-display.png" },
-    { id: 6, category: "music", title: "Band Performance", image: "/college-band-music-performance.png" },
-    { id: 7, category: "dance", title: "Modern Dance", image: "/modern-contemporary-dance-performance.png" },
-    { id: 8, category: "theatre", title: "Comedy Skit", image: "/comedy-theatrical-performance-stage.png" },
-    { id: 9, category: "visual-arts", title: "Sculpture Display", image: "/sculpture-art-display-exhibition.png" },
+    { id: 1, category: "college", title: "College", image: "/college1.jpeg" },
+    { id: 1, category: "college", title: "College", image: "/college2.jpeg" },
+    { id: 1, category: "college", title: "College", image: "/college3.jpeg" },
+    { id: 1, category: "speech", title: "speech", image: "/college4.jpeg" },
+    // { id: 2, category: "dance", title: "Traditional Dance", image: "/traditional-cultural-dance-performance.png" },
+    // { id: 3, category: "theatre", title: "Drama Performance", image: "/theatrical-drama-stage-performance.png" },
+    // { id: 4, category: "visual-arts", title: "Art Exhibition", image: "/art-gallery-exhibition-paintings.png" },
+    // { id: 5, category: "photography", title: "Photo Contest", image: "/photography-contest-display.png" },
+    // { id: 6, category: "music", title: "Band Performance", image: "/college-band-music-performance.png" },
+    // { id: 7, category: "dance", title: "Modern Dance", image: "/modern-contemporary-dance-performance.png" },
+    // { id: 8, category: "theatre", title: "Comedy Skit", image: "/comedy-theatrical-performance-stage.png" },
+    // { id: 9, category: "visual-arts", title: "Sculpture Display", image: "/sculpture-art-display-exhibition.png" },
   ]
 
   const filteredItems =
