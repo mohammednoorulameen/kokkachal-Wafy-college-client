@@ -758,7 +758,7 @@ const UserManagement = ({ token }) => {
                                 if (e.target.checked) {
                                   setFieldValue("programs", [
                                     ...values.programs,
-                                    { programId: p._id, isActive: true },
+                                    { programId: p._id, isActive: false },
                                   ]);
                                 } else {
                                   setFieldValue(
