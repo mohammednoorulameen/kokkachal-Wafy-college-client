@@ -6,6 +6,7 @@ import Adminlogin from "@/Components/layout/Admin/AdminLogin"
 import UserManagement from "@/Components/layout/Admin/UserManagement"
 import Categorymanagement from "@/Components/layout/Admin/categoryManagement"
 import Programmanagement from "@/Components/layout/Admin/programManagement"
+import AllProgramResult from "@/Components/layout/Admin/AllProgramResult"
 
 const  AdminHomePage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -91,6 +92,16 @@ const  AdminHomePage = () => {
           >
             <Award className="h-4 w-4" /> Programs
           </button>
+           <button
+            className={`flex items-center gap-2 px-4 py-2 -mb-px border-b-2 ${
+              activeTab === "AllProgramsResult"
+                ? "border-blue-500 text-blue-500 font-medium"
+                : "border-transparent text-gray-500 hover:text-gray-700"
+            }`}
+            onClick={() => setActiveTab("AllProgramsResult")}
+          >
+            <Award className="h-4 w-4" /> All Programs Result
+          </button>
         </div>
 
         {/* Tab Content */}
@@ -98,6 +109,7 @@ const  AdminHomePage = () => {
           {activeTab === "users" && <UserManagement token={token} />}
           {activeTab === "categories" && <Categorymanagement token={token} />}
           {activeTab === "programs" && <Programmanagement token={token} />}
+          {activeTab === "AllProgramsResult" && <AllProgramResult token={token} />}
         </div>
       </main>
     </div>
@@ -105,6 +117,13 @@ const  AdminHomePage = () => {
 }
 
 export default AdminHomePage
+
+
+
+
+
+
+
 
 // const AdminHomePage = () => {
 //   return (
