@@ -80,7 +80,7 @@ export default function App() {
                 KAF 14TH EDITION
               </h3>
               <p className="text-2xl font-semibold text-white">
-                Arts Festival 2023-24
+                Arts Festival 2025-26
               </p>
               <p className="text-white leading-relaxed">
                 Celebrating creativity, culture, and artistic excellence in our
