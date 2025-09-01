@@ -4,11 +4,11 @@ import { useState } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Search, ChevronDown, ChevronUp } from "lucide-react"
 
-export default function AllProgramResult() {
+const  AllProgramResult = () => {
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [searchTerm, setSearchTerm] = useState("")
   const [openPrograms, setOpenPrograms] = useState({})
-  const [selectedStudents, setSelectedStudents] = useState({}) // ✅ track checked students per program
+  const [selectedStudents, setSelectedStudents] = useState({}) 
 
   // ✅ Static dummy data
   const resultsData = [
@@ -202,6 +202,8 @@ export default function AllProgramResult() {
   )
 }
 
+
+export default AllProgramResult
 
 // // const AllProgramResult = () => {
 // //   return (
