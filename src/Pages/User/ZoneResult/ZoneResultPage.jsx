@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { ChevronDown, ChevronUp, Search } from "lucide-react";
 import userInstance from "@/axios/UserInstance";
@@ -9,8 +10,6 @@ export default function ZoneResultsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
-  console.log(resultsData)
-  // ✅ Fetch API data and reshape
   useEffect(() => {
     const fetchResults = async () => {
       try {
