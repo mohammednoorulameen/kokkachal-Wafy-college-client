@@ -9,6 +9,7 @@ export default function ZoneResultsPage() {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
 
+  console.log(resultsData)
   // ✅ Fetch API data and reshape
   useEffect(() => {
     const fetchResults = async () => {
