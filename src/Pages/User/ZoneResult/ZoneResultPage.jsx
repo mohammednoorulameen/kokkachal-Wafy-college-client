@@ -170,7 +170,7 @@ function ZoneResultsPage() {
                               </p>
                               <p className="font-bold">Team: {student.team}</p>
                               <p className="font-bold">
-                                Points: {student.program.points}
+                                Position: {student.program.points}
                               </p>
                               <p className="font-bold text-green-500">
                                 Grade:{" "}
